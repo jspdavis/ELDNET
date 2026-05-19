@@ -1,0 +1,171 @@
+@model IEnumerable<JobPortal.Models.JobPosting>
+@{
+    ViewData["Title"] = "Company Dashboard";
+    var company = ViewBag.Company as JobPortal.Models.Company;
+}
+
+<section class="page-hero py-5 mb-2">
+    <div class="container">
+        <div class="d-flex flex-wrap justify-content-between align-items-start gap-3">
+            <div>
+                <h1 class="page-hero-title mb-1">
+                    <i class="bi bi-building me-2 text-primary"></i>@company?.CompanyName
+                </h1>
+                <p class="text-muted mb-0">
+                    <i class="bi bi-geo-alt me-1"></i>@company?.Location
+                    @if (!string.IsNullOrEmpty(company?.Website))
+                    {
+                        <span class="ms-3">
+                            <i class="bi bi-globe me-1"></i>
+                            <a href="@company.Website" target="_blank" class="text-primary">@company.Website</a>
+                        </span>
+                    }
+                </p>
+            </div>
+            <div class="d-flex gap-2">
+                <a asp-controller="Jobs" asp-action="Create" class="btn btn-primary">
+                    <i class="bi bi-plus-lg me-1"></i>Post New Job
+                </a>
+                <a asp-controller="Company" asp-action="Profile" class="btn btn-outline-secondary">
+                    <i class="bi bi-pencil me-1"></i>Edit Profile
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-4">
+    <div class="container">
+
+        <!-- Summary Stats -->
+        <div class="row g-3 mb-4">
+            @{
+                int total    = Model.Count();
+                int active   = Model.Count(j => j.IsActive);
+                int inactive = Model.Count(j => !j.IsActive);
+                int totalApplicants = Model.Sum(j => j.ApplicationCount);
+            }
+            <div class="col-6 col-md-3">
+                <div class="stat-card text-center p-3">
+                    <div class="stat-card-number text-white">@total</div>
+                    <div class="stat-card-label text-muted small">Total Jobs</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stat-card text-center p-3">
+                    <div class="stat-card-number text-success">@active</div>
+                    <div class="stat-card-label text-muted small">Active</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stat-card text-center p-3">
+                    <div class="stat-card-number text-secondary">@inactive</div>
+                    <div class="stat-card-label text-muted small">Closed</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stat-card text-center p-3">
+                    <div class="stat-card-number text-primary">@totalApplicants</div>
+                    <div class="stat-card-label text-muted small">Total Applicants</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Job Postings Table -->
+        <div class="table-card">
+            <div class="d-flex justify-content-between align-items-center p-3 border-bottom border-dark">
+                <h5 class="fw-bold text-white mb-0">Your Job Postings</h5>
+            </div>
+
+            @if (!Model.Any())
+            {
+                <div class="text-center py-5">
+                    <i class="bi bi-briefcase fs-1 text-muted mb-3 d-block"></i>
+                    <p class="text-muted">No jobs posted yet.</p>
+                    <a asp-controller="Jobs" asp-action="Create" class="btn btn-primary mt-2">
+                        Post Your First Job
+                    </a>
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-dark table-hover align-middle mb-0">
+                        <thead class="table-head">
+                            <tr>
+                                <th>Title</th>
+                                <th>Category</th>
+                                <th>Location</th>
+                                <th class="text-center">Applicants</th>
+                                <th class="text-center">Status</th>
+                                <th class="text-center">Posted</th>
+                                <th class="text-end">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var job in Model)
+                            {
+                                <tr class="@(!job.IsActive ? "opacity-50" : "")">
+                                    <td class="fw-semibold text-white">@job.Title</td>
+                                    <td>
+                                        <span class="badge-category-sm">@job.CategoryName</span>
+                                    </td>
+                                    <td class="text-muted small">@job.Location</td>
+                                    <td class="text-center">
+                                        @if (job.ApplicationCount > 0)
+                                        {
+                                            <a asp-controller="Company" asp-action="Applicants"
+                                               asp-route-jobId="@job.JobId"
+                                               class="btn btn-sm btn-outline-primary">
+                                                @job.ApplicationCount
+                                                <i class="bi bi-people ms-1"></i>
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">0</span>
+                                        }
+                                    </td>
+                                    <td class="text-center">
+                                        @if (job.IsActive)
+                                        {
+                                            <span class="badge bg-success">Active</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary">Closed</span>
+                                        }
+                                    </td>
+                                    <td class="text-muted small text-center">
+                                        @job.PostedAt.ToString("MMM dd, yyyy")
+                                    </td>
+                                    <td class="text-end">
+                                        <div class="d-flex gap-1 justify-content-end">
+                                            <a asp-controller="Jobs" asp-action="Edit"
+                                               asp-route-id="@job.JobId"
+                                               class="btn btn-sm btn-outline-secondary"
+                                               title="Edit">
+                                                <i class="bi bi-pencil"></i>
+                                            </a>
+                                            @if (job.IsActive)
+                                            {
+                                                <form asp-controller="Jobs" asp-action="Delete"
+                                                      asp-route-id="@job.JobId" method="post"
+                                                      onsubmit="return confirm('Close this job listing?');">
+                                                    @Html.AntiForgeryToken()
+                                                    <button type="submit" class="btn btn-sm btn-outline-danger" title="Close">
+                                                        <i class="bi bi-x-circle"></i>
+                                                    </button>
+                                                </form>
+                                            }
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</section>

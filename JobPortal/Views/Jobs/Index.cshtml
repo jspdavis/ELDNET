@@ -1,0 +1,115 @@
+@model IEnumerable<JobPortal.Models.JobPosting>
+@{
+    ViewData["Title"] = "Browse Jobs";
+    var categories    = ViewBag.Categories as IEnumerable<JobPortal.Models.JobCategory>;
+    var keyword       = ViewBag.Keyword as string;
+}
+
+<section class="page-hero py-5 mb-2">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <h1 class="page-hero-title mb-2">Find Your Next Opportunity</h1>
+                <p class="text-muted">Browse @Model.Count() active job postings across all categories.</p>
+            </div>
+        </div>
+
+        <!-- Keyword Search Form -->
+        <form method="get" asp-controller="Jobs" asp-action="Index" class="mt-4">
+            <div class="search-bar d-flex gap-2">
+                <input type="text" name="keyword" value="@keyword" class="form-control form-control-lg search-input"
+                       placeholder="Search by job title or keyword…" id="keywordInput" />
+                <button class="btn btn-primary btn-lg px-5" type="submit">
+                    <i class="bi bi-search me-2"></i>Search
+                </button>
+                @if (!string.IsNullOrEmpty(keyword))
+                {
+                    <a asp-action="Index" class="btn btn-outline-secondary btn-lg">Clear</a>
+                }
+            </div>
+        </form>
+    </div>
+</section>
+
+<section class="py-4">
+    <div class="container">
+
+        <!-- Category Filter Buttons (AJAX) -->
+        @if (categories != null && categories.Any())
+        {
+            <div class="category-filter-bar mb-4 d-flex gap-2 flex-wrap">
+                <button class="btn-filter active" data-category-id="" onclick="filterJobs(null, this)">
+                    <i class="bi bi-grid-3x3-gap me-1"></i>All
+                </button>
+                @foreach (var cat in categories)
+                {
+                    <button class="btn-filter" data-category-id="@cat.CategoryId"
+                            onclick="filterJobs(@cat.CategoryId, this)">
+                        @cat.CategoryName
+                    </button>
+                }
+            </div>
+        }
+
+        <!-- Loading Spinner (hidden by default; shown during AJAX) -->
+        <div id="loadingSpinner" class="text-center py-5 d-none">
+            <div class="spinner-border text-primary" role="status" style="width:3rem;height:3rem;">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="text-muted mt-3">Finding jobs for you…</p>
+        </div>
+
+        <!-- Job Cards Container — replaced by AJAX response -->
+        <div class="row g-4" id="jobsContainer">
+            @await Html.PartialAsync("_JobCard", Model)
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+<script>
+    /**
+     * filterJobs — called when a category filter button is clicked.
+     * Fires a fetch() to /Jobs/Filter?categoryId=X and replaces
+     * the #jobsContainer innerHTML with the returned partial HTML.
+     */
+    function filterJobs(categoryId, btn) {
+        // Mark the clicked button as active
+        document.querySelectorAll('.btn-filter').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const keyword  = document.getElementById('keywordInput').value;
+        const container = document.getElementById('jobsContainer');
+        const spinner   = document.getElementById('loadingSpinner');
+
+        // Build query string
+        let url = '/Jobs/Filter?';
+        if (categoryId) url += `categoryId=${categoryId}&`;
+        if (keyword)    url += `keyword=${encodeURIComponent(keyword)}`;
+
+        // Show spinner, hide cards
+        container.classList.add('d-none');
+        spinner.classList.remove('d-none');
+
+        fetch(url)
+            .then(res => {
+                if (!res.ok) throw new Error('Network error');
+                return res.text();
+            })
+            .then(html => {
+                container.innerHTML = html;
+                container.classList.remove('d-none');
+                spinner.classList.add('d-none');
+            })
+            .catch(() => {
+                spinner.classList.add('d-none');
+                container.classList.remove('d-none');
+                container.innerHTML = `
+                    <div class="col-12 text-center py-5">
+                        <i class="bi bi-wifi-off fs-1 text-danger mb-3 d-block"></i>
+                        <p class="text-danger">Failed to load jobs. Please refresh the page.</p>
+                    </div>`;
+            });
+    }
+</script>
+}

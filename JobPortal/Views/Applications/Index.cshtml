@@ -1,0 +1,113 @@
+@model IEnumerable<JobPortal.Models.Application>
+@{
+    ViewData["Title"] = "My Applications";
+}
+
+<section class="page-hero py-5 mb-2">
+    <div class="container">
+        <h1 class="page-hero-title">My Applications</h1>
+        <p class="text-muted">Track the status of all your submitted applications.</p>
+    </div>
+</section>
+
+<section class="py-4">
+    <div class="container">
+
+        @if (!Model.Any())
+        {
+            <div class="empty-state text-center py-5">
+                <i class="bi bi-file-earmark-x fs-1 text-muted mb-3 d-block"></i>
+                <h5 class="text-muted">No applications yet</h5>
+                <p class="text-muted small">Start by browsing jobs and submitting your first application.</p>
+                <a asp-controller="Jobs" asp-action="Index" class="btn btn-primary mt-3">
+                    <i class="bi bi-search me-2"></i>Browse Jobs
+                </a>
+            </div>
+        }
+        else
+        {
+            <!-- Summary Counts -->
+            <div class="row g-3 mb-4">
+                @{
+                    int total    = Model.Count();
+                    int pending  = Model.Count(a => a.Status == "pending");
+                    int reviewed = Model.Count(a => a.Status == "reviewed");
+                    int accepted = Model.Count(a => a.Status == "accepted");
+                    int rejected = Model.Count(a => a.Status == "rejected");
+                }
+                <div class="col-6 col-md-3">
+                    <div class="stat-card text-center p-3">
+                        <div class="stat-card-number text-white">@total</div>
+                        <div class="stat-card-label text-muted small">Total</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="stat-card text-center p-3">
+                        <div class="stat-card-number text-warning">@pending</div>
+                        <div class="stat-card-label text-muted small">Pending</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="stat-card text-center p-3">
+                        <div class="stat-card-number text-info">@reviewed</div>
+                        <div class="stat-card-label text-muted small">Reviewed</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="stat-card text-center p-3">
+                        <div class="stat-card-number text-success">@accepted</div>
+                        <div class="stat-card-label text-muted small">Accepted</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Applications Table -->
+            <div class="table-card">
+                <div class="table-responsive">
+                    <table class="table table-dark table-hover align-middle mb-0">
+                        <thead class="table-head">
+                            <tr>
+                                <th>Job Title</th>
+                                <th>Company</th>
+                                <th>Applied On</th>
+                                <th>Status</th>
+                                <th class="text-end">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var app in Model)
+                            {
+                                <tr>
+                                    <td class="fw-semibold text-white">@app.JobTitle</td>
+                                    <td class="text-muted">
+                                        <i class="bi bi-building me-1"></i>@app.CompanyName
+                                    </td>
+                                    <td class="text-muted small">@app.AppliedAt.ToString("MMM dd, yyyy")</td>
+                                    <td>
+                                        <span class="status-badge status-@app.Status.ToLower()">
+                                            @app.Status.ToUpper()
+                                        </span>
+                                    </td>
+                                    <td class="text-end">
+                                        <a asp-controller="Jobs" asp-action="Details"
+                                           asp-route-id="@app.JobId"
+                                           class="btn btn-sm btn-outline-secondary">
+                                            View Job
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Track Link -->
+            <div class="text-end mt-3">
+                <a asp-controller="Applications" asp-action="Track" class="btn btn-outline-primary">
+                    <i class="bi bi-graph-up me-2"></i>Pipeline View
+                </a>
+            </div>
+        }
+    </div>
+</section>

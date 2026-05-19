@@ -1,0 +1,77 @@
+@model IEnumerable<JobPortal.Models.Application>
+@{
+    ViewData["Title"] = "Application Pipeline";
+}
+
+<section class="page-hero py-5 mb-2">
+    <div class="container">
+        <h1 class="page-hero-title">Application Pipeline</h1>
+        <p class="text-muted">Visual overview of where each application stands in the hiring process.</p>
+    </div>
+</section>
+
+<section class="py-4">
+    <div class="container">
+
+        @if (!Model.Any())
+        {
+            <div class="empty-state text-center py-5">
+                <i class="bi bi-diagram-3 fs-1 text-muted mb-3 d-block"></i>
+                <h5 class="text-muted">No applications to track yet</h5>
+                <a asp-controller="Jobs" asp-action="Index" class="btn btn-primary mt-3">Browse Jobs</a>
+            </div>
+        }
+        else
+        {
+            <!-- Pipeline Stage Headers -->
+            <div class="pipeline-header row g-2 mb-3 text-center">
+                <div class="col-3"><div class="pipeline-stage-label stage-pending">Pending</div></div>
+                <div class="col-3"><div class="pipeline-stage-label stage-reviewed">Reviewed</div></div>
+                <div class="col-3"><div class="pipeline-stage-label stage-accepted">Accepted</div></div>
+                <div class="col-3"><div class="pipeline-stage-label stage-rejected">Rejected</div></div>
+            </div>
+
+            <!-- Pipeline Columns -->
+            <div class="row g-2 pipeline-board">
+                @{
+                    var stages = new[] { "pending", "reviewed", "accepted", "rejected" };
+                }
+                @foreach (var stage in stages)
+                {
+                    var stageApps = Model.Where(a => a.Status == stage).ToList();
+                    <div class="col-3 pipeline-col">
+                        @if (!stageApps.Any())
+                        {
+                            <div class="pipeline-empty text-center text-muted small py-4">
+                                <i class="bi bi-inbox d-block fs-4 mb-2"></i>None
+                            </div>
+                        }
+                        @foreach (var app in stageApps)
+                        {
+                            <div class="pipeline-card mb-3">
+                                <p class="fw-semibold text-white mb-1 small">@app.JobTitle</p>
+                                <p class="text-muted small mb-2">
+                                    <i class="bi bi-building me-1"></i>@app.CompanyName
+                                </p>
+                                <p class="text-muted" style="font-size: 0.72rem;">
+                                    Applied @app.AppliedAt.ToString("MMM dd")
+                                </p>
+                                <a asp-controller="Jobs" asp-action="Details"
+                                   asp-route-id="@app.JobId"
+                                   class="btn btn-sm btn-outline-secondary w-100">
+                                    View Job
+                                </a>
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+
+            <div class="text-end mt-4">
+                <a asp-controller="Applications" asp-action="Index" class="btn btn-outline-primary">
+                    <i class="bi bi-list-ul me-2"></i>Table View
+                </a>
+            </div>
+        }
+    </div>
+</section>

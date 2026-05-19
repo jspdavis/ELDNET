@@ -1,0 +1,65 @@
+@model IEnumerable<JobPortal.Models.JobPosting>
+
+@* 
+    Partial view: _JobCard.cshtml
+    Renders a grid of job cards. Used both on initial page load AND
+    returned by the AJAX /Jobs/Filter endpoint for category filtering.
+    Keep this file self-contained — no layout, no ViewBag dependencies.
+*@
+
+@if (!Model.Any())
+{
+    <div class="col-12">
+        <div class="empty-state text-center py-5">
+            <i class="bi bi-search fs-1 text-muted mb-3 d-block"></i>
+            <h5 class="text-muted">No jobs found</h5>
+            <p class="text-muted small">Try a different keyword or category.</p>
+        </div>
+    </div>
+}
+else
+{
+    @foreach (var job in Model)
+    {
+        <div class="col-md-6 col-xl-4">
+            <div class="job-card h-100">
+                <!-- Category Badge + Salary -->
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <span class="badge-category">@job.CategoryName</span>
+                    @if (!string.IsNullOrEmpty(job.SalaryRange))
+                    {
+                        <span class="badge-salary">@job.SalaryRange</span>
+                    }
+                </div>
+
+                <!-- Job Title -->
+                <h5 class="job-title mb-1">
+                    <a asp-controller="Jobs" asp-action="Details" asp-route-id="@job.JobId"
+                       class="stretched-link text-decoration-none">
+                        @job.Title
+                    </a>
+                </h5>
+
+                <!-- Company Name -->
+                <p class="job-company mb-3">
+                    <i class="bi bi-building me-1"></i>@job.CompanyName
+                </p>
+
+                <!-- Description Preview -->
+                <p class="job-description small text-muted mb-3">
+                    @(job.Description.Length > 100 ? job.Description.Substring(0, 100) + "…" : job.Description)
+                </p>
+
+                <!-- Meta: Location + Date -->
+                <div class="job-meta d-flex gap-3 flex-wrap mt-auto">
+                    <span><i class="bi bi-geo-alt me-1"></i>@job.Location</span>
+                    <span><i class="bi bi-clock me-1"></i>@job.PostedAt.ToString("MMM dd, yyyy")</span>
+                    @if (job.ApplicationCount > 0)
+                    {
+                        <span><i class="bi bi-people me-1"></i>@job.ApplicationCount applicant@(job.ApplicationCount != 1 ? "s" : "")</span>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+}

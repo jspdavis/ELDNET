@@ -1,0 +1,93 @@
+@model IEnumerable<JobPortal.Models.Application>
+@{
+    ViewData["Title"] = "Applicants";
+    var job = ViewBag.Job as JobPortal.Models.JobPosting;
+}
+
+<section class="page-hero py-5 mb-2">
+    <div class="container">
+        <a asp-controller="Company" asp-action="Dashboard" class="btn-back mb-3 d-inline-flex align-items-center gap-2">
+            <i class="bi bi-arrow-left"></i> Back to Dashboard
+        </a>
+        <h1 class="page-hero-title mb-1">Applicants for "@job?.Title"</h1>
+        <p class="text-muted">@Model.Count() applicant@(Model.Count() != 1 ? "s" : "") have applied to this position.</p>
+    </div>
+</section>
+
+<section class="py-4">
+    <div class="container">
+
+        @if (!Model.Any())
+        {
+            <div class="empty-state text-center py-5">
+                <i class="bi bi-people fs-1 text-muted mb-3 d-block"></i>
+                <h5 class="text-muted">No applications yet</h5>
+                <p class="text-muted small">Share your job listing to attract candidates.</p>
+            </div>
+        }
+        else
+        {
+            <div class="row g-4">
+                @foreach (var app in Model)
+                {
+                    <div class="col-lg-6">
+                        <div class="applicant-card p-4">
+                            <!-- Applicant Header -->
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="applicant-avatar">
+                                        @app.ApplicantName.Substring(0, 1).ToUpper()
+                                    </div>
+                                    <div>
+                                        <h6 class="fw-bold text-white mb-0">@app.ApplicantName</h6>
+                                        <p class="text-muted small mb-0">
+                                            <i class="bi bi-envelope me-1"></i>@app.ApplicantEmail
+                                        </p>
+                                    </div>
+                                </div>
+                                <span class="status-badge status-@app.Status.ToLower()">
+                                    @app.Status.ToUpper()
+                                </span>
+                            </div>
+
+                            <!-- Applied Date -->
+                            <p class="text-muted small mb-3">
+                                <i class="bi bi-clock me-1"></i>
+                                Applied on @app.AppliedAt.ToString("MMMM dd, yyyy 'at' h:mm tt")
+                            </p>
+
+                            <!-- Cover Letter Preview -->
+                            <div class="cover-letter-preview mb-4">
+                                <p class="text-muted small fw-semibold mb-1">Cover Letter</p>
+                                <p class="text-light small lh-lg mb-0">
+                                    @(app.CoverLetter.Length > 200
+                                        ? app.CoverLetter.Substring(0, 200) + "…"
+                                        : app.CoverLetter)
+                                </p>
+                            </div>
+
+                            <!-- Status Update Form -->
+                            <form asp-controller="Company" asp-action="UpdateStatus" method="post"
+                                  class="d-flex gap-2 align-items-center">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="applicationId" value="@app.ApplicationId" />
+                                <input type="hidden" name="jobId" value="@job?.JobId" />
+
+                                <select name="status" class="form-select form-select-sm dark-input flex-grow-1">
+                                    <option value="pending"  selected="@(app.Status == "pending"  ? "selected" : null)">Pending</option>
+                                    <option value="reviewed" selected="@(app.Status == "reviewed" ? "selected" : null)">Reviewed</option>
+                                    <option value="accepted" selected="@(app.Status == "accepted" ? "selected" : null)">Accepted</option>
+                                    <option value="rejected" selected="@(app.Status == "rejected" ? "selected" : null)">Rejected</option>
+                                </select>
+
+                                <button type="submit" class="btn btn-sm btn-primary px-3">
+                                    <i class="bi bi-check-lg me-1"></i>Update
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</section>

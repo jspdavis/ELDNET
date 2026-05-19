@@ -1,0 +1,93 @@
+@model JobPortal.Models.ViewModels.JobFormViewModel
+@{
+    ViewData["Title"] = "Post a New Job";
+}
+
+<section class="py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+
+                <div class="form-card p-4 p-md-5">
+                    <div class="mb-4">
+                        <h1 class="form-card-title">Post a New Job</h1>
+                        <p class="text-muted">Fill in the details below to publish your job listing.</p>
+                    </div>
+
+                    <form asp-controller="Jobs" asp-action="Create" method="post"
+                          class="needs-validation" novalidate>
+                        @Html.AntiForgeryToken()
+
+                        <!-- Job Title -->
+                        <div class="mb-4">
+                            <label asp-for="Title" class="form-label fw-semibold text-light"></label>
+                            <input asp-for="Title" class="form-control form-control-lg dark-input"
+                                   placeholder="e.g. Senior Backend Developer" />
+                            <span asp-validation-for="Title" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Category -->
+                        <div class="mb-4">
+                            <label asp-for="CategoryId" class="form-label fw-semibold text-light"></label>
+                            <select asp-for="CategoryId" class="form-select dark-input form-select-lg">
+                                <option value="">— Select a category —</option>
+                                @foreach (var cat in Model.Categories)
+                                {
+                                    <option value="@cat.CategoryId">@cat.CategoryName</option>
+                                }
+                            </select>
+                            <span asp-validation-for="CategoryId" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Location + Salary (side by side) -->
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label asp-for="Location" class="form-label fw-semibold text-light"></label>
+                                <input asp-for="Location" class="form-control dark-input"
+                                       placeholder="e.g. Makati, Metro Manila" />
+                                <span asp-validation-for="Location" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="SalaryRange" class="form-label fw-semibold text-light"></label>
+                                <input asp-for="SalaryRange" class="form-control dark-input"
+                                       placeholder="e.g. ₱50,000 – ₱80,000/month" />
+                                <span asp-validation-for="SalaryRange" class="text-danger small"></span>
+                            </div>
+                        </div>
+
+                        <!-- Description -->
+                        <div class="mb-4">
+                            <label asp-for="Description" class="form-label fw-semibold text-light"></label>
+                            <textarea asp-for="Description" class="form-control dark-input" rows="6"
+                                      placeholder="Describe the role, responsibilities, and what makes it exciting…"></textarea>
+                            <span asp-validation-for="Description" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Requirements -->
+                        <div class="mb-5">
+                            <label asp-for="Requirements" class="form-label fw-semibold text-light"></label>
+                            <textarea asp-for="Requirements" class="form-control dark-input" rows="4"
+                                      placeholder="List qualifications, experience, and skills required…"></textarea>
+                            <span asp-validation-for="Requirements" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Actions -->
+                        <div class="d-flex gap-3">
+                            <button type="submit" class="btn btn-primary btn-lg px-5">
+                                <i class="bi bi-send-fill me-2"></i>Publish Job
+                            </button>
+                            <a asp-controller="Company" asp-action="Dashboard"
+                               class="btn btn-outline-secondary btn-lg">
+                                Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,118 @@
+@model IEnumerable<JobPortal.Models.JobPosting>
+@{
+    ViewData["Title"] = "Home";
+}
+
+<!-- ─── Hero Section ─── -->
+<section class="hero-section">
+    <div class="hero-overlay"></div>
+    <div class="container hero-content text-center position-relative">
+        <div class="hero-badge mb-4">
+            <i class="bi bi-lightning-fill me-2"></i>Over 100 active job listings
+        </div>
+        <h1 class="hero-title">Find Your Dream Job <br class="d-none d-md-block" />in the Philippines</h1>
+        <p class="hero-subtitle mx-auto">
+            Connect with top companies, explore opportunities across all industries,
+            and take the next step in your career.
+        </p>
+        <div class="hero-actions d-flex flex-wrap justify-content-center gap-3 mt-5">
+            <a asp-controller="Jobs" asp-action="Index" class="btn btn-primary btn-lg px-5 py-3 fw-semibold">
+                <i class="bi bi-search me-2"></i>Browse Jobs
+            </a>
+            @if (Context.Session.GetString("userId") == null)
+            {
+                <a asp-controller="Auth" asp-action="Register" class="btn btn-outline-light btn-lg px-5 py-3 fw-semibold">
+                    Post a Job <i class="bi bi-arrow-right ms-2"></i>
+                </a>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- ─── Stats Row ─── -->
+<section class="stats-section py-4">
+    <div class="container">
+        <div class="row g-0 stats-row text-center">
+            <div class="col-4 stat-item">
+                <div class="stat-number">500+</div>
+                <div class="stat-label">Companies</div>
+            </div>
+            <div class="col-4 stat-item border-x">
+                <div class="stat-number">2,000+</div>
+                <div class="stat-label">Job Listings</div>
+            </div>
+            <div class="col-4 stat-item">
+                <div class="stat-number">10,000+</div>
+                <div class="stat-label">Applicants</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ─── Featured Jobs ─── -->
+<section class="py-5">
+    <div class="container">
+        <div class="section-header d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2 class="section-title mb-1">Latest Opportunities</h2>
+                <p class="text-muted small mb-0">Freshly posted — updated daily</p>
+            </div>
+            <a asp-controller="Jobs" asp-action="Index" class="btn btn-outline-primary">
+                View All <i class="bi bi-arrow-right ms-1"></i>
+            </a>
+        </div>
+
+        <div class="row g-4">
+            @await Html.PartialAsync("_JobCard", Model)
+        </div>
+    </div>
+</section>
+
+<!-- ─── Why JobPortal ─── -->
+<section class="why-section py-6">
+    <div class="container">
+        <h2 class="section-title text-center mb-5">Why Choose JobPortal?</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="feature-card text-center p-4">
+                    <div class="feature-icon mb-3"><i class="bi bi-shield-check-fill"></i></div>
+                    <h5 class="fw-bold text-white mb-2">Verified Employers</h5>
+                    <p class="text-muted small">All companies are vetted. Browse with confidence knowing every listing is legitimate.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card text-center p-4">
+                    <div class="feature-icon mb-3"><i class="bi bi-lightning-charge-fill"></i></div>
+                    <h5 class="fw-bold text-white mb-2">Apply in Seconds</h5>
+                    <p class="text-muted small">Create your account, write your cover letter, and submit — all in under two minutes.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card text-center p-4">
+                    <div class="feature-icon mb-3"><i class="bi bi-graph-up-arrow"></i></div>
+                    <h5 class="fw-bold text-white mb-2">Track Your Progress</h5>
+                    <p class="text-muted small">Monitor application statuses in real-time — from pending to accepted.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ─── CTA Banner ─── -->
+@if (Context.Session.GetString("userId") == null)
+{
+    <section class="cta-section py-5">
+        <div class="container text-center">
+            <h2 class="cta-title mb-3">Ready to Take the Next Step?</h2>
+            <p class="text-muted mb-4">Join thousands of professionals already using JobPortal to advance their careers.</p>
+            <div class="d-flex gap-3 justify-content-center">
+                <a asp-controller="Auth" asp-action="Register" class="btn btn-primary btn-lg px-5">
+                    Get Started — It's Free
+                </a>
+                <a asp-controller="Auth" asp-action="Login" class="btn btn-outline-light btn-lg px-5">
+                    Sign In
+                </a>
+            </div>
+        </div>
+    </section>
+}

@@ -1,0 +1,72 @@
+@model JobPortal.Models.Company
+@{
+    ViewData["Title"] = "Company Profile";
+}
+
+<section class="page-hero py-5 mb-2">
+    <div class="container">
+        <h1 class="page-hero-title">Company Profile</h1>
+        <p class="text-muted">Update your company information visible to applicants.</p>
+    </div>
+</section>
+
+<section class="py-4">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-7">
+                <div class="form-card p-4 p-md-5">
+                    <form asp-controller="Company" asp-action="Profile" method="post"
+                          class="needs-validation" novalidate>
+                        @Html.AntiForgeryToken()
+
+                        <!-- Company Name -->
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold text-light">Company Name <span class="text-danger">*</span></label>
+                            <input name="CompanyName" value="@Model.CompanyName"
+                                   class="form-control form-control-lg dark-input"
+                                   placeholder="Your company's official name" required />
+                            <span class="text-danger small">@(ViewData.ModelState["CompanyName"]?.Errors.FirstOrDefault()?.ErrorMessage)</span>
+                        </div>
+
+                        <!-- Description -->
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold text-light">Description</label>
+                            <textarea name="Description" class="form-control dark-input" rows="5"
+                                      placeholder="Tell applicants about your company, culture, and mission…">@Model.Description</textarea>
+                        </div>
+
+                        <!-- Location + Website -->
+                        <div class="row g-3 mb-5">
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold text-light">Location</label>
+                                <input name="Location" value="@Model.Location"
+                                       class="form-control dark-input"
+                                       placeholder="e.g. Makati, Metro Manila" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold text-light">Website</label>
+                                <input name="Website" value="@Model.Website"
+                                       class="form-control dark-input"
+                                       placeholder="https://yourcompany.com" />
+                            </div>
+                        </div>
+
+                        <div class="d-flex gap-3">
+                            <button type="submit" class="btn btn-primary btn-lg px-5">
+                                <i class="bi bi-floppy-fill me-2"></i>Save Profile
+                            </button>
+                            <a asp-controller="Company" asp-action="Dashboard"
+                               class="btn btn-outline-secondary btn-lg">
+                                Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
