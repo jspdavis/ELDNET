@@ -24,7 +24,9 @@
                 </button>
                 @if (!string.IsNullOrEmpty(keyword))
                 {
-                    <a asp-action="Index" class="btn btn-outline-secondary btn-lg">Clear</a>
+                    <a asp-action="Index" class="btn btn-outline-secondary btn-lg">
+                        <i class="bi bi-x-circle me-2"></i>Clear
+                    </a>
                 }
             </div>
         </form>

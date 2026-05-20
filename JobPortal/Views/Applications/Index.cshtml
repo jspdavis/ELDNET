@@ -37,7 +37,7 @@
                 }
                 <div class="col-6 col-md-3">
                     <div class="stat-card text-center p-3">
-                        <div class="stat-card-number text-white">@total</div>
+                        <div class="stat-card-number text-slate">@total</div>
                         <div class="stat-card-label text-muted small">Total</div>
                     </div>
                 </div>
@@ -64,7 +64,7 @@
             <!-- Applications Table -->
             <div class="table-card">
                 <div class="table-responsive">
-                    <table class="table table-dark table-hover align-middle mb-0">
+                    <table class="table table-hover align-middle mb-0">
                         <thead class="table-head">
                             <tr>
                                 <th>Job Title</th>
@@ -78,7 +78,7 @@
                             @foreach (var app in Model)
                             {
                                 <tr>
-                                    <td class="fw-semibold text-white">@app.JobTitle</td>
+                                    <td class="fw-semibold text-slate">@app.JobTitle</td>
                                     <td class="text-muted">
                                         <i class="bi bi-building me-1"></i>@app.CompanyName
                                     </td>
