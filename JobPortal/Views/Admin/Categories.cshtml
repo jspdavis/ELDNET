@@ -1,0 +1,81 @@
+@model IEnumerable<JobPortal.Models.JobCategory>
+
+@{
+    ViewData["Title"] = "Category Management";
+}
+
+<div class="container mt-4">
+
+    <h2>Category Management</h2>
+
+    <form asp-action="CreateCategory"
+          method="post"
+          class="d-flex gap-2 mb-4">
+
+        <input type="text"
+               name="categoryName"
+               class="form-control"
+               placeholder="New category" />
+
+        <button class="btn btn-success">
+            Add
+        </button>
+
+    </form>
+
+    <table class="table table-dark table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Category Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        @foreach (var category in Model)
+        {
+            <tr>
+                <td>@category.CategoryId</td>
+
+                <td>
+                    <form asp-action="EditCategory"
+                          asp-route-id="@category.CategoryId"
+                          method="post"
+                          class="d-flex gap-2">
+
+                        <input type="text"
+                               name="newName"
+                               value="@category.CategoryName"
+                               class="form-control" />
+
+                        <button class="btn btn-primary btn-sm">
+                            Edit
+                        </button>
+
+                    </form>
+                </td>
+
+                <td>
+                    <form asp-action="DeleteCategory"
+                          asp-route-id="@category.CategoryId"
+                          method="post"
+                          onsubmit="return confirm('Delete category?');">
+
+                        <button class="btn btn-danger btn-sm">
+                            Delete
+                        </button>
+
+                    </form>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+
+    <a asp-action="Dashboard"
+       class="btn btn-secondary">
+        Back
+    </a>
+
+</div>

@@ -1,0 +1,75 @@
+@model JobPortal.Models.ViewModels.AdminDashboardViewModel
+
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<div class="container mt-4">
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["Success"]
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["Error"]
+        </div>
+    }
+
+    <h2 class="mb-4">Admin Dashboard</h2>
+
+    <div class="row g-4">
+        <div class="col-md-3">
+            <div class="card text-center p-4">
+                <h1>@Model.TotalCompanies</h1>
+                <p>Total Companies</p>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-center p-4">
+                <h1>@Model.TotalApplicants</h1>
+                <p>Total Applicants</p>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-center p-4">
+                <h1>@Model.TotalActiveJobs</h1>
+                <p>Active Listings</p>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-center p-4">
+                <h1>@Model.TotalApplications</h1>
+                <p>Total Applications</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-5 d-flex gap-3">
+        <a asp-controller="Admin"
+           asp-action="Users"
+           class="btn btn-primary">
+            Manage Users
+        </a>
+
+        <a asp-controller="Admin"
+           asp-action="Categories"
+           class="btn btn-warning">
+            Manage Categories
+        </a>
+
+        <a asp-controller="Admin"
+           asp-action="Jobs"
+           class="btn btn-danger">
+            Manage Jobs
+        </a>
+    </div>
+
+</div>

@@ -153,3 +153,26 @@ INSERT INTO applications (job_id, user_id, cover_letter, status, applied_at) VAL
 (5, 7, 'Writing is my passion. I specialize in SEO-optimized content and have published over 200 articles online.', 'reviewed',  '2025-02-14 08:30:00'),
 (1, 6, 'I am transitioning from a QA role into backend development and have completed several personal projects in Java.', 'rejected',  '2025-02-15 10:00:00'),
 (7, 4, 'I am a Graphic Design graduate with a strong portfolio across print and digital media.', 'pending',   '2025-02-20 09:00:00');
+
+
+-- ============================================================
+-- ADD ADMIN ROLE TO USERS TABLE
+-- ============================================================
+
+ALTER TABLE users 
+MODIFY COLUMN role ENUM('company', 'applicant', 'admin') NOT NULL;
+
+-- ============================================================
+-- DEFAULT ADMIN ACCOUNT
+-- Email: admin@jobportal.com
+-- Password: Admin@1234
+-- ============================================================
+
+INSERT INTO users (email, password_hash, role, full_name, created_at)
+VALUES (
+    'admin@jobportal.com',
+    '$2a$11$tk0tUJL0aDwzU0hwyEpVoeMAbrdYgZB4pRPLhymbFgiC.zCxAKr16',
+    'admin',
+    'System Administrator',
+    NOW()
+);

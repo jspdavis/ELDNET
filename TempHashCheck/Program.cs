@@ -1,0 +1,1 @@
+using System; class Program { static void Main() { Console.WriteLine("VERIFY: " + BCrypt.Net.BCrypt.Verify("Admin@1234", "$2a$11$8K1p/a0dL1fJ7K5m9M7P2uM1zvA7Q0mX0gGQx5Y6lQnW0Q7x8JH3W")); Console.WriteLine("HASH: " + BCrypt.Net.BCrypt.HashPassword("Admin@1234", 11)); } }

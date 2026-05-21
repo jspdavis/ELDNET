@@ -29,6 +29,7 @@ namespace JobPortal.Controllers
             if (HttpContext.Session.GetString("userId") != null)
             {
                 var role = HttpContext.Session.GetString("userRole");
+                if (role == "admin") return RedirectToAction("Dashboard", "Admin");
                 return role == "company"
                     ? RedirectToAction("Dashboard", "Company")
                     : RedirectToAction("Index", "Applications");
@@ -66,6 +67,7 @@ namespace JobPortal.Controllers
             HttpContext.Session.SetString("fullName", user.FullName);
 
             // Redirect to role-specific page
+            if (user.Role == "admin") return RedirectToAction("Dashboard", "Admin");
             return user.Role == "company"
                 ? RedirectToAction("Dashboard", "Company")
                 : RedirectToAction("Index", "Jobs");

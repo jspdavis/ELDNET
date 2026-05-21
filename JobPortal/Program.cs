@@ -25,6 +25,7 @@ builder.Services.AddSingleton<DatabaseContext>();
 builder.Services.AddScoped<IUserService,        UserService>();
 builder.Services.AddScoped<IJobService,         JobService>();
 builder.Services.AddScoped<IApplicationService, ApplicationService>();
+builder.Services.AddScoped<IAdminService,       AdminService>();
 
 // ── HttpContextAccessor ───────────────────────────────────────────────────────
 // Needed so Razor views can access HttpContext.Session

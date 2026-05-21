@@ -21,8 +21,8 @@ namespace JobPortal.Models
         public string PasswordHash { get; set; } = string.Empty;
 
         [Required]
-        [RegularExpression("^(company|applicant)$", ErrorMessage = "Role must be either 'company' or 'applicant'.")]
-        public string Role { get; set; } = string.Empty;   // "company" or "applicant"
+        [RegularExpression("^(company|applicant|admin)$", ErrorMessage = "Role must be either 'company', 'applicant', or 'admin'.")]
+        public string Role { get; set; } = string.Empty;   // "company", "applicant", or "admin"
 
         [Required(ErrorMessage = "Full name is required.")]
         [StringLength(150, ErrorMessage = "Name cannot exceed 150 characters.")]
