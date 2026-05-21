@@ -60,19 +60,29 @@ namespace JobPortal.Services
             using var db = Connection;
 
             return await db.QueryAsync<User>(@"
-                SELECT *
+                SELECT user_id        AS UserId,
+                       email          AS Email,
+                       password_hash  AS PasswordHash,
+                       role           AS Role,
+                       full_name      AS FullName,
+                       created_at     AS CreatedAt
                 FROM users
                 WHERE role IN ('company', 'applicant')
                 ORDER BY created_at DESC");
         }
 
         // Returns a single user by ID
-        public async Task<User> GetUserByIdAsync(int userId)
+        public async Task<User?> GetUserByIdAsync(int userId)
         {
             using var db = Connection;
 
             return await db.QueryFirstOrDefaultAsync<User>(@"
-                SELECT *
+                SELECT user_id        AS UserId,
+                       email          AS Email,
+                       password_hash  AS PasswordHash,
+                       role           AS Role,
+                       full_name      AS FullName,
+                       created_at     AS CreatedAt
                 FROM users
                 WHERE user_id = @UserId",
                 new { UserId = userId });
@@ -83,16 +93,19 @@ namespace JobPortal.Services
         {
             using var db = Connection;
 
+            // Check if this user has submitted any applications
             var applications = await db.ExecuteScalarAsync<int>(@"
                 SELECT COUNT(*)
                 FROM applications
-                WHERE applicant_id = @UserId",
+                WHERE user_id = @UserId",
                 new { UserId = userId });
 
+            // Check if this user owns a company that has job postings
             var jobs = await db.ExecuteScalarAsync<int>(@"
                 SELECT COUNT(*)
-                FROM job_postings
-                WHERE company_id = @UserId",
+                FROM job_postings jp
+                INNER JOIN companies c ON c.company_id = jp.company_id
+                WHERE c.user_id = @UserId",
                 new { UserId = userId });
 
             if (applications > 0 || jobs > 0)
@@ -106,81 +119,27 @@ namespace JobPortal.Services
             return true;
         }
 
-        // Returns all categories
-        public async Task<IEnumerable<JobCategory>> GetAllCategoriesAsync()
-        {
-            using var db = Connection;
-
-            return await db.QueryAsync<JobCategory>(@"
-                SELECT *
-                FROM job_categories
-                ORDER BY category_name");
-        }
-
-        // Creates a new category
-        public async Task<int> CreateCategoryAsync(string categoryName)
-        {
-            using var db = Connection;
-
-            var sql = @"
-                INSERT INTO job_categories(category_name)
-                VALUES(@CategoryName);
-
-                SELECT LAST_INSERT_ID();";
-
-            return await db.ExecuteScalarAsync<int>(
-                sql,
-                new { CategoryName = categoryName });
-        }
-
-        // Updates a category name
-        public async Task UpdateCategoryAsync(
-            int categoryId,
-            string newName)
-        {
-            using var db = Connection;
-
-            await db.ExecuteAsync(@"
-                UPDATE job_categories
-                SET category_name = @NewName
-                WHERE category_id = @CategoryId",
-                new
-                {
-                    CategoryId = categoryId,
-                    NewName = newName
-                });
-        }
-
-        // Deletes a category if unused
-        public async Task<bool> DeleteCategoryAsync(int categoryId)
-        {
-            using var db = Connection;
-
-            var jobs = await db.ExecuteScalarAsync<int>(@"
-                SELECT COUNT(*)
-                FROM job_postings
-                WHERE category_id = @CategoryId",
-                new { CategoryId = categoryId });
-
-            if (jobs > 0)
-                return false;
-
-            await db.ExecuteAsync(@"
-                DELETE FROM job_categories
-                WHERE category_id = @CategoryId",
-                new { CategoryId = categoryId });
-
-            return true;
-        }
-
-        // Returns all job postings
+        // Returns all job postings with company and category names
         public async Task<IEnumerable<JobPosting>> GetAllJobPostingsAsync()
         {
             using var db = Connection;
 
             return await db.QueryAsync<JobPosting>(@"
-                SELECT jp.*
+                SELECT jp.job_id        AS JobId,
+                       jp.company_id    AS CompanyId,
+                       jp.category_id   AS CategoryId,
+                       jp.title         AS Title,
+                       jp.description   AS Description,
+                       jp.requirements  AS Requirements,
+                       jp.location      AS Location,
+                       jp.salary_range  AS SalaryRange,
+                       jp.is_active     AS IsActive,
+                       jp.posted_at     AS PostedAt,
+                       c.company_name   AS CompanyName,
+                       jc.category_name AS CategoryName
                 FROM job_postings jp
+                INNER JOIN companies      c  ON c.company_id  = jp.company_id
+                INNER JOIN job_categories jc ON jc.category_id = jp.category_id
                 ORDER BY jp.posted_at DESC");
         }
 

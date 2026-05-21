@@ -1,0 +1,8 @@
+<Project>
+  <!-- Permanent workaround for .NET 9 SDK 9.0.300 bug:
+       DiscoverPrecompressedAssets throws duplicate key on site.css.
+       This file is evaluated AFTER all SDK targets, so these overrides win. -->
+  <Target Name="_CollectCompressedStaticWebAssets" />
+  <Target Name="DiscoverPrecompressedAssets" />
+  <Target Name="ResolveBuildCompressedStaticWebAssetsConfiguration" />
+</Project>

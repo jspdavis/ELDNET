@@ -4,71 +4,112 @@
     ViewData["Title"] = "Admin Dashboard";
 }
 
-<div class="container mt-4">
-
-    @if (TempData["Success"] != null)
-    {
-        <div class="alert alert-success">
-            @TempData["Success"]
+<!-- ── Page Hero ── -->
+<div class="page-hero mb-4">
+    <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+        <div>
+            <p class="text-muted small mb-1 fw-semibold" style="letter-spacing:.08em; text-transform:uppercase;">
+                <i class="bi bi-shield-lock-fill me-1"></i>Administration
+            </p>
+            <h1 class="page-hero-title mb-1">Admin <strong>Dashboard</strong></h1>
+            <p class="text-muted mb-0" style="font-size:.92rem;">
+                System overview — manage users and job listings.
+            </p>
         </div>
-    }
+    </div>
+</div>
 
-    @if (TempData["Error"] != null)
-    {
-        <div class="alert alert-danger">
-            @TempData["Error"]
-        </div>
-    }
+<!-- ── Stat Cards ── -->
+<div class="row g-3 mb-4">
 
-    <h2 class="mb-4">Admin Dashboard</h2>
-
-    <div class="row g-4">
-        <div class="col-md-3">
-            <div class="card text-center p-4">
-                <h1>@Model.TotalCompanies</h1>
-                <p>Total Companies</p>
+    <div class="col-sm-6 col-xl-3">
+        <div class="stat-card form-card h-100" style="border-left-color: var(--accent-teal);">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+                <div class="feature-icon" style="width:46px;height:46px;font-size:1.2rem;">
+                    <i class="bi bi-building"></i>
+                </div>
+                <span class="badge-category">Companies</span>
             </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="card text-center p-4">
-                <h1>@Model.TotalApplicants</h1>
-                <p>Total Applicants</p>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="card text-center p-4">
-                <h1>@Model.TotalActiveJobs</h1>
-                <p>Active Listings</p>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="card text-center p-4">
-                <h1>@Model.TotalApplications</h1>
-                <p>Total Applications</p>
-            </div>
+            <div class="stat-card-number">@Model.TotalCompanies</div>
+            <div class="stat-card-label mt-1">Registered Companies</div>
         </div>
     </div>
 
-    <div class="mt-5 d-flex gap-3">
-        <a asp-controller="Admin"
-           asp-action="Users"
-           class="btn btn-primary">
-            Manage Users
-        </a>
+    <div class="col-sm-6 col-xl-3">
+        <div class="stat-card form-card h-100" style="border-left-color: var(--accent-sage);">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+                <div class="feature-icon" style="width:46px;height:46px;font-size:1.2rem; background:linear-gradient(135deg,rgba(98,130,118,.15),rgba(98,130,118,.08)); border-color:rgba(98,130,118,.3); color:var(--accent-sage);">
+                    <i class="bi bi-person-lines-fill"></i>
+                </div>
+                <span class="badge-category" style="color:var(--accent-sage); border-color:rgba(98,130,118,.3); background:rgba(98,130,118,.1);">Applicants</span>
+            </div>
+            <div class="stat-card-number" style="color:var(--accent-sage);">@Model.TotalApplicants</div>
+            <div class="stat-card-label mt-1">Registered Applicants</div>
+        </div>
+    </div>
 
-        <a asp-controller="Admin"
-           asp-action="Categories"
-           class="btn btn-warning">
-            Manage Categories
-        </a>
+    <div class="col-sm-6 col-xl-3">
+        <div class="stat-card form-card h-100" style="border-left-color: var(--accent-orange-deep);">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+                <div class="feature-icon" style="width:46px;height:46px;font-size:1.2rem; background:linear-gradient(135deg,rgba(255,209,149,.25),rgba(245,185,66,.12)); border-color:rgba(245,185,66,.4); color:var(--accent-orange-deep);">
+                    <i class="bi bi-briefcase-fill"></i>
+                </div>
+                <span class="badge-salary">Active</span>
+            </div>
+            <div class="stat-card-number" style="color:var(--accent-orange-deep);">@Model.TotalActiveJobs</div>
+            <div class="stat-card-label mt-1">Active Job Listings</div>
+        </div>
+    </div>
 
-        <a asp-controller="Admin"
-           asp-action="Jobs"
-           class="btn btn-danger">
-            Manage Jobs
+    <div class="col-sm-6 col-xl-3">
+        <div class="stat-card form-card h-100" style="border-left-color: var(--accent-slate);">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+                <div class="feature-icon" style="width:46px;height:46px;font-size:1.2rem; background:linear-gradient(135deg,rgba(62,81,83,.12),rgba(62,81,83,.06)); border-color:rgba(62,81,83,.25); color:var(--accent-slate);">
+                    <i class="bi bi-file-earmark-text-fill"></i>
+                </div>
+                <span class="badge-category" style="color:var(--accent-slate); border-color:rgba(62,81,83,.25); background:rgba(62,81,83,.08);">Total</span>
+            </div>
+            <div class="stat-card-number" style="color:var(--accent-slate);">@Model.TotalApplications</div>
+            <div class="stat-card-label mt-1">Total Applications</div>
+        </div>
+    </div>
+
+</div>
+
+<!-- ── Quick Actions ── -->
+<div class="row g-3">
+
+    <div class="col-md-6">
+        <a asp-action="Users" class="text-decoration-none">
+            <div class="form-card h-100 d-flex align-items-center gap-4 p-4" style="transition:var(--transition); cursor:pointer;"
+                 onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='var(--shadow-hover)'"
+                 onmouseout="this.style.transform=''; this.style.boxShadow=''">
+                <div class="feature-icon flex-shrink-0" style="width:56px;height:56px;font-size:1.5rem;">
+                    <i class="bi bi-people-fill"></i>
+                </div>
+                <div>
+                    <div class="fw-semibold" style="font-size:1.05rem; color:var(--text-primary);">Manage Users</div>
+                    <div class="text-muted small mt-1">View, and delete company and applicant accounts.</div>
+                </div>
+                <i class="bi bi-arrow-right ms-auto text-muted"></i>
+            </div>
+        </a>
+    </div>
+
+    <div class="col-md-6">
+        <a asp-action="Jobs" class="text-decoration-none">
+            <div class="form-card h-100 d-flex align-items-center gap-4 p-4" style="transition:var(--transition); cursor:pointer;"
+                 onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='var(--shadow-hover)'"
+                 onmouseout="this.style.transform=''; this.style.boxShadow=''">
+                <div class="feature-icon flex-shrink-0" style="width:56px;height:56px;font-size:1.5rem; background:linear-gradient(135deg,rgba(255,209,149,.25),rgba(245,185,66,.12)); border-color:rgba(245,185,66,.4); color:var(--accent-orange-deep);">
+                    <i class="bi bi-briefcase-fill"></i>
+                </div>
+                <div>
+                    <div class="fw-semibold" style="font-size:1.05rem; color:var(--text-primary);">Manage Jobs</div>
+                    <div class="text-muted small mt-1">Review all job postings and permanently remove listings.</div>
+                </div>
+                <i class="bi bi-arrow-right ms-auto text-muted"></i>
+            </div>
         </a>
     </div>
 

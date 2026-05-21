@@ -4,6 +4,10 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <!-- Workaround for .NET 9 SDK bug: DiscoverPrecompressedAssets duplicate key error -->
+    <StaticWebAssetsEnabled>true</StaticWebAssetsEnabled>
+    <CompressStaticWebAssets>false</CompressStaticWebAssets>
+    <StaticWebAssetsBuildMetaPackageName />
   </PropertyGroup>
 
   <ItemGroup>

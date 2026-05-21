@@ -64,68 +64,6 @@ namespace JobPortal.Controllers
             return RedirectToAction(nameof(Users));
         }
 
-        // Displays all job categories
-        public async Task<IActionResult> Categories()
-        {
-            if (!IsAdmin()) return RedirectToAction("Login", "Auth");
-
-            var categories = await _adminService.GetAllCategoriesAsync();
-            return View(categories);
-        }
-
-        // Creates a new job category
-        [HttpPost]
-        public async Task<IActionResult> CreateCategory(string categoryName)
-        {
-            if (!IsAdmin()) return RedirectToAction("Login", "Auth");
-
-            if (string.IsNullOrWhiteSpace(categoryName))
-            {
-                TempData["Error"] = "Category name is required.";
-                return RedirectToAction(nameof(Categories));
-            }
-
-            await _adminService.CreateCategoryAsync(categoryName);
-
-            TempData["Success"] = "Category created.";
-
-            return RedirectToAction(nameof(Categories));
-        }
-
-        // Updates an existing category
-        [HttpPost]
-        public async Task<IActionResult> EditCategory(int id, string newName)
-        {
-            if (!IsAdmin()) return RedirectToAction("Login", "Auth");
-
-            await _adminService.UpdateCategoryAsync(id, newName);
-
-            TempData["Success"] = "Category updated.";
-
-            return RedirectToAction(nameof(Categories));
-        }
-
-        // Deletes a category if no jobs reference it
-        [HttpPost]
-        public async Task<IActionResult> DeleteCategory(int id)
-        {
-            if (!IsAdmin()) return RedirectToAction("Login", "Auth");
-
-            var deleted = await _adminService.DeleteCategoryAsync(id);
-
-            if (!deleted)
-            {
-                TempData["Error"] =
-                    "Cannot delete a category with active job listings.";
-            }
-            else
-            {
-                TempData["Success"] = "Category deleted.";
-            }
-
-            return RedirectToAction(nameof(Categories));
-        }
-
         // Displays all job postings
         public async Task<IActionResult> Jobs()
         {

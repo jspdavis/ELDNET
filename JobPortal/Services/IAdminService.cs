@@ -20,22 +20,10 @@ namespace JobPortal.Services
         Task<IEnumerable<User>> GetAllUsersAsync();
 
         // Returns a single user by ID
-        Task<User> GetUserByIdAsync(int userId);
+        Task<User?> GetUserByIdAsync(int userId);
 
         // Deletes a user if no linked data exists
         Task<bool> DeleteUserAsync(int userId);
-
-        // Returns all categories
-        Task<IEnumerable<JobCategory>> GetAllCategoriesAsync();
-
-        // Creates a new category
-        Task<int> CreateCategoryAsync(string categoryName);
-
-        // Updates a category name
-        Task UpdateCategoryAsync(int categoryId, string newName);
-
-        // Deletes a category if unused
-        Task<bool> DeleteCategoryAsync(int categoryId);
 
         // Returns all job postings
         Task<IEnumerable<JobPosting>> GetAllJobPostingsAsync();
