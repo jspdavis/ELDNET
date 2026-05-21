@@ -83,6 +83,13 @@ namespace JobPortal.Controllers
         {
             if (!IsCompany()) return RedirectToAction("Login", "Auth");
 
+            // Validate all model annotations before proceeding
+            if (!ModelState.IsValid)
+            {
+                TempData["Error"] = "Invalid request.";
+                return RedirectToAction("Applicants", new { jobId });
+            }
+
             // Only allow valid status values
             var validStatuses = new[] { "pending", "reviewed", "accepted", "rejected" };
             if (!validStatuses.Contains(status))
@@ -126,10 +133,11 @@ namespace JobPortal.Controllers
             if (!IsCompany()) return RedirectToAction("Login", "Auth");
 
             if (string.IsNullOrWhiteSpace(model.CompanyName))
-            {
                 ModelState.AddModelError("CompanyName", "Company name is required.");
+
+            // Validate all model annotations before proceeding
+            if (!ModelState.IsValid)
                 return View(model);
-            }
 
             int userId      = int.Parse(HttpContext.Session.GetString("userId")!);
             var existingCo  = await _userService.GetCompanyByUserIdAsync(userId);

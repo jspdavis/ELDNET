@@ -46,6 +46,7 @@
                                     </div>
                                 </label>
                             </div>
+                            <span asp-validation-for="Role" class="text-danger small d-block mt-2"></span>
                         </div>
 
                         <!-- Full Name -->
@@ -98,6 +99,7 @@
                                 <label asp-for="CompanyDescription" class="form-label text-muted small fw-semibold"></label>
                                 <textarea asp-for="CompanyDescription" class="form-control dark-input" rows="3"
                                           placeholder="A brief description of your company…"></textarea>
+                                <span asp-validation-for="CompanyDescription" class="text-danger small"></span>
                             </div>
 
                             <div class="row g-3 mb-3">
@@ -105,6 +107,7 @@
                                     <label asp-for="CompanyLocation" class="form-label text-muted small fw-semibold"></label>
                                     <input asp-for="CompanyLocation" class="form-control dark-input"
                                            placeholder="e.g. Makati, Manila" />
+                                    <span asp-validation-for="CompanyLocation" class="text-danger small"></span>
                                 </div>
                                 <div class="col-md-6">
                                     <label asp-for="CompanyWebsite" class="form-label text-muted small fw-semibold"></label>

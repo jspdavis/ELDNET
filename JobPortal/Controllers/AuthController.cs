@@ -46,6 +46,7 @@ namespace JobPortal.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
+            // Validate all model annotations before proceeding
             if (!ModelState.IsValid)
                 return View(model);
 
@@ -96,6 +97,7 @@ namespace JobPortal.Controllers
             if (model.Role == "company" && string.IsNullOrWhiteSpace(model.CompanyName))
                 ModelState.AddModelError("CompanyName", "Company name is required for company accounts.");
 
+            // Validate all model annotations before proceeding
             if (!ModelState.IsValid)
                 return View(model);
 

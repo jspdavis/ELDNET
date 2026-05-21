@@ -24,11 +24,11 @@ namespace JobPortal.Models.ViewModels
         public string Requirements { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Location is required.")]
-        [StringLength(200)]
+        [StringLength(200, ErrorMessage = "Location cannot exceed 200 characters.")]
         [Display(Name = "Location")]
         public string Location { get; set; } = string.Empty;
 
-        [StringLength(100)]
+        [StringLength(100, ErrorMessage = "Salary range cannot exceed 100 characters.")]
         [Display(Name = "Salary Range")]
         public string SalaryRange { get; set; } = string.Empty;
 

@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace JobPortal.Models
 {
@@ -11,11 +12,22 @@ namespace JobPortal.Models
         public int JobId { get; set; }
         public int CompanyId { get; set; }
         public int CategoryId { get; set; }
+
+        [Required(ErrorMessage = "Job title is required.")]
+        [StringLength(255, ErrorMessage = "Title cannot exceed 255 characters.")]
         public string Title { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "Job description is required.")]
         public string Description { get; set; } = string.Empty;
+
         public string Requirements { get; set; } = string.Empty;
+
+        [StringLength(200, ErrorMessage = "Location cannot exceed 200 characters.")]
         public string Location { get; set; } = string.Empty;
+
+        [StringLength(100, ErrorMessage = "Salary range cannot exceed 100 characters.")]
         public string SalaryRange { get; set; } = string.Empty;
+
         public bool IsActive { get; set; }
         public DateTime PostedAt { get; set; }
 

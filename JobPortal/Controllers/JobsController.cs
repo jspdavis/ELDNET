@@ -101,6 +101,7 @@ namespace JobPortal.Controllers
         {
             if (!IsCompany()) return RedirectToAction("Login", "Auth");
 
+            // Validate all model annotations before proceeding
             if (!ModelState.IsValid)
             {
                 // Re-populate category dropdown if form fails validation
@@ -177,6 +178,7 @@ namespace JobPortal.Controllers
         {
             if (!IsCompany()) return RedirectToAction("Login", "Auth");
 
+            // Validate all model annotations before proceeding
             if (!ModelState.IsValid)
             {
                 model.Categories = (await _jobService.GetAllCategoriesAsync()).ToList();
@@ -215,6 +217,13 @@ namespace JobPortal.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             if (!IsCompany()) return RedirectToAction("Login", "Auth");
+
+            // Validate all model annotations before proceeding
+            if (!ModelState.IsValid)
+            {
+                TempData["Error"] = "Invalid request.";
+                return RedirectToAction("Dashboard", "Company");
+            }
 
             // Verify ownership before deleting
             var job     = await _jobService.GetJobByIdAsync(id);

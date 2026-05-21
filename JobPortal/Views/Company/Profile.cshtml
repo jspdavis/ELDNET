@@ -19,35 +19,37 @@
                           class="needs-validation" novalidate>
                         @Html.AntiForgeryToken()
 
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2 small"></div>
+
                         <!-- Company Name -->
                         <div class="mb-4">
-                            <label class="form-label fw-semibold text-light">Company Name <span class="text-danger">*</span></label>
-                            <input name="CompanyName" value="@Model.CompanyName"
-                                   class="form-control form-control-lg dark-input"
-                                   placeholder="Your company's official name" required />
-                            <span class="text-danger small">@(ViewData.ModelState["CompanyName"]?.Errors.FirstOrDefault()?.ErrorMessage)</span>
+                            <label asp-for="CompanyName" class="form-label fw-semibold text-light">Company Name <span class="text-danger">*</span></label>
+                            <input asp-for="CompanyName" class="form-control form-control-lg dark-input"
+                                   placeholder="Your company's official name" />
+                            <span asp-validation-for="CompanyName" class="text-danger small"></span>
                         </div>
 
                         <!-- Description -->
                         <div class="mb-4">
-                            <label class="form-label fw-semibold text-light">Description</label>
-                            <textarea name="Description" class="form-control dark-input" rows="5"
-                                      placeholder="Tell applicants about your company, culture, and mission…">@Model.Description</textarea>
+                            <label asp-for="Description" class="form-label fw-semibold text-light"></label>
+                            <textarea asp-for="Description" class="form-control dark-input" rows="5"
+                                      placeholder="Tell applicants about your company, culture, and mission…"></textarea>
+                            <span asp-validation-for="Description" class="text-danger small"></span>
                         </div>
 
                         <!-- Location + Website -->
                         <div class="row g-3 mb-5">
                             <div class="col-md-6">
-                                <label class="form-label fw-semibold text-light">Location</label>
-                                <input name="Location" value="@Model.Location"
-                                       class="form-control dark-input"
+                                <label asp-for="Location" class="form-label fw-semibold text-light"></label>
+                                <input asp-for="Location" class="form-control dark-input"
                                        placeholder="e.g. Makati, Metro Manila" />
+                                <span asp-validation-for="Location" class="text-danger small"></span>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label fw-semibold text-light">Website</label>
-                                <input name="Website" value="@Model.Website"
-                                       class="form-control dark-input"
+                                <label asp-for="Website" class="form-label fw-semibold text-light"></label>
+                                <input asp-for="Website" class="form-control dark-input"
                                        placeholder="https://yourcompany.com" />
+                                <span asp-validation-for="Website" class="text-danger small"></span>
                             </div>
                         </div>
 

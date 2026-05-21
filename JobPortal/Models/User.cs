@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace JobPortal.Models
 {
@@ -9,10 +10,24 @@ namespace JobPortal.Models
     public class User
     {
         public int UserId { get; set; }
+
+        [Required(ErrorMessage = "Email is required.")]
+        [EmailAddress(ErrorMessage = "Please enter a valid email address.")]
+        [StringLength(255, ErrorMessage = "Email cannot exceed 255 characters.")]
         public string Email { get; set; } = string.Empty;
+
+        [Required]
+        [StringLength(255)]
         public string PasswordHash { get; set; } = string.Empty;
+
+        [Required]
+        [RegularExpression("^(company|applicant)$", ErrorMessage = "Role must be either 'company' or 'applicant'.")]
         public string Role { get; set; } = string.Empty;   // "company" or "applicant"
+
+        [Required(ErrorMessage = "Full name is required.")]
+        [StringLength(150, ErrorMessage = "Name cannot exceed 150 characters.")]
         public string FullName { get; set; } = string.Empty;
+
         public DateTime CreatedAt { get; set; }
     }
 }

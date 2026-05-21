@@ -81,6 +81,7 @@ namespace JobPortal.Controllers
         {
             if (!IsApplicant()) return RedirectToAction("Login", "Auth");
 
+            // Validate all model annotations before proceeding
             if (!ModelState.IsValid)
                 return View(model);
 

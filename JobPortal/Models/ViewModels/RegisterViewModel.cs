@@ -15,11 +15,15 @@ namespace JobPortal.Models.ViewModels
 
         [Required(ErrorMessage = "Email is required.")]
         [EmailAddress(ErrorMessage = "Please enter a valid email address.")]
+        [StringLength(255, ErrorMessage = "Email cannot exceed 255 characters.")]
         [Display(Name = "Email Address")]
         public string Email { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Password is required.")]
         [MinLength(8, ErrorMessage = "Password must be at least 8 characters.")]
+        [StringLength(100, ErrorMessage = "Password cannot exceed 100 characters.")]
+        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$",
+            ErrorMessage = "Password must contain at least one uppercase letter, one lowercase letter, and one digit.")]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; } = string.Empty;
@@ -36,16 +40,19 @@ namespace JobPortal.Models.ViewModels
 
         // --- Company-only fields (shown/required when Role == "company") ---
 
+        [StringLength(200, ErrorMessage = "Company name cannot exceed 200 characters.")]
         [Display(Name = "Company Name")]
         public string? CompanyName { get; set; }
 
         [Display(Name = "Company Description")]
         public string? CompanyDescription { get; set; }
 
+        [StringLength(200, ErrorMessage = "Company location cannot exceed 200 characters.")]
         [Display(Name = "Company Location")]
         public string? CompanyLocation { get; set; }
 
         [Url(ErrorMessage = "Please enter a valid URL (e.g. https://company.com).")]
+        [StringLength(255, ErrorMessage = "Company website URL cannot exceed 255 characters.")]
         [Display(Name = "Company Website")]
         public string? CompanyWebsite { get; set; }
     }
