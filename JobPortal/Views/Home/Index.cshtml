@@ -3,116 +3,768 @@
     ViewData["Title"] = "Home";
 }
 
-<!-- ─── Hero Section ─── -->
-<section class="hero-section">
-    <div class="hero-overlay"></div>
-    <div class="container hero-content text-center position-relative">
-        <div class="hero-badge mb-4">
-            <i class="bi bi-lightning-fill me-2"></i>Over 100 active job listings
-        </div>
-        <h1 class="hero-title">Find Your Dream Job <br class="d-none d-md-block" />in the Philippines</h1>
-        <p class="hero-subtitle mx-auto">
-            Connect with top companies, explore opportunities across all industries,
-            and take the next step in your career.
-        </p>
-        <div class="hero-actions d-flex flex-wrap justify-content-center gap-3 mt-5">
-            <a asp-controller="Jobs" asp-action="Index" class="btn btn-primary btn-lg px-5 py-3 fw-semibold">
-                <i class="bi bi-search me-2"></i>Browse Jobs
-            </a>
-            @if (Context.Session.GetString("userId") == null)
-            {
-                <a asp-controller="Auth" asp-action="Register" class="btn btn-outline-light btn-lg px-5 py-3 fw-semibold">
-                    Post a Job <i class="bi bi-arrow-right ms-2"></i>
-                </a>
-            }
+<!-- ───────────────────────────────────────────── -->
+<!-- PRESENTATION STYLE LANDING PAGE -->
+<!-- ───────────────────────────────────────────── -->
+<!-- SLIDE 1 : HERO -->
+<section class="presentation-slide hero-slide">
+    <div class="slide-overlay"></div>
+
+    <div class="container position-relative">
+        <div class="row align-items-center min-vh-100">
+
+            <div class="col-lg-6">
+
+                <div class="presentation-tag mb-4">
+                    ASP.NET Core MVC • .NET 8 • MySQL
+                </div>
+
+                <h1 class="hero-title mb-4">
+                    JobPortal
+                </h1>
+
+                <p class="hero-description mb-4">
+                    A modern recruitment and hiring management system
+                    built for companies and applicants in the Philippines.
+                </p>
+
+                <div class="hero-features mb-5">
+
+                    <div class="feature-pill">
+                        <i class="bi bi-building"></i>
+                        Company Dashboard
+                    </div>
+
+                    <div class="feature-pill">
+                        <i class="bi bi-person-workspace"></i>
+                        Applicant Portal
+                    </div>
+
+                    <div class="feature-pill">
+                        <i class="bi bi-briefcase-fill"></i>
+                        Job Management
+                    </div>
+
+                </div>
+
+                <div class="d-flex flex-wrap gap-3">
+
+                    <a asp-controller="Jobs"
+                       asp-action="Index"
+                       class="btn btn-primary btn-lg px-5 py-3">
+                        <i class="bi bi-search me-2"></i>
+                        Explore Jobs
+                    </a>
+
+                    @if (Context.Session.GetString("userId") == null)
+                    {
+                        <a asp-controller="Auth"
+                           asp-action="Register"
+                           class="btn btn-outline-success btn-lg px-5 py-3">
+                            Get Started
+                        </a>
+                    }
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-6">
+
+                <div class="system-preview-card">
+
+                    <div class="preview-header">
+                        <div class="preview-dot red"></div>
+                        <div class="preview-dot yellow"></div>
+                        <div class="preview-dot green"></div>
+                    </div>
+
+                    <div class="preview-body">
+
+                        <div class="preview-stat-grid">
+
+                            <div class="preview-stat">
+                                <h2>500+</h2>
+                                <span>Companies</span>
+                            </div>
+
+                            <div class="preview-stat">
+                                <h2>2,000+</h2>
+                                <span>Jobs</span>
+                            </div>
+
+                            <div class="preview-stat">
+                                <h2>10k+</h2>
+                                <span>Applicants</span>
+                            </div>
+
+                            <div class="preview-stat">
+                                <h2>.NET 8</h2>
+                                <span>Framework</span>
+                            </div>
+
+                        </div>
+
+                        <div class="preview-tech mt-4">
+
+                            <div class="tech-item">ASP.NET Core MVC</div>
+                            <div class="tech-item">Dapper ORM</div>
+                            <div class="tech-item">MySQL 8+</div>
+                            <div class="tech-item">BCrypt Security</div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
         </div>
     </div>
 </section>
 
-<!-- ─── Stats Row ─── -->
-<section class="stats-section py-4">
-    <div class="container">
-        <div class="row g-0 stats-row text-center">
-            <div class="col-4 stat-item">
-                <div class="stat-number">500+</div>
-                <div class="stat-label">Companies</div>
-            </div>
-            <div class="col-4 stat-item border-x">
-                <div class="stat-number">2,000+</div>
-                <div class="stat-label">Job Listings</div>
-            </div>
-            <div class="col-4 stat-item">
-                <div class="stat-number">10,000+</div>
-                <div class="stat-label">Applicants</div>
-            </div>
+<!-- SLIDE 2 -->
+<section class="presentation-slide section-light">
+    <div class="container py-5">
+
+        <div class="section-heading text-center mb-5">
+            <div class="slide-number">01</div>
+            <h2>About The System</h2>
+            <p>JobPortal simplifies recruitment, applications, and company hiring workflows.</p>
         </div>
+
+        <div class="row g-4">
+
+            <div class="col-md-4">
+                <div class="info-card h-100">
+                    <div class="info-icon"><i class="bi bi-building-fill"></i></div>
+                    <h4>Company Module</h4>
+                    <p>Companies can create accounts, post jobs, manage listings, and review applications.</p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="info-card h-100">
+                    <div class="info-icon"><i class="bi bi-person-badge-fill"></i></div>
+                    <h4>Applicant Module</h4>
+                    <p>Applicants can browse jobs, apply online, and track application progress.</p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="info-card h-100">
+                    <div class="info-icon"><i class="bi bi-shield-lock-fill"></i></div>
+                    <h4>Secure Authentication</h4>
+                    <p>Session-based authentication with BCrypt password hashing for security.</p>
+                </div>
+            </div>
+
+        </div>
+
     </div>
 </section>
 
-<!-- ─── Featured Jobs ─── -->
-<section class="py-5">
-    <div class="container">
-        <div class="section-header d-flex justify-content-between align-items-center mb-4">
-            <div>
-                <h2 class="section-title mb-1">Latest Opportunities</h2>
-                <p class="text-muted small mb-0">Freshly posted — updated daily</p>
+<!-- SLIDE 3 -->
+<section class="presentation-slide section-dark">
+
+    <div class="container py-5">
+
+        <div class="section-heading text-center mb-5">
+            <div class="slide-number">02</div>
+            <h2>Technology Stack</h2>
+            <p>Modern technologies used in the development</p>
+        </div>
+
+        <div class="row g-4">
+
+            <div class="col-lg-3 col-md-6">
+                <div class="tech-card">
+                    <i class="bi bi-window-stack"></i>
+                    <h5>Framework</h5>
+                    <p>ASP.NET Core MVC (.NET 8)</p>
+                </div>
             </div>
-            <a asp-controller="Jobs" asp-action="Index" class="btn btn-outline-primary">
-                View All <i class="bi bi-arrow-right ms-1"></i>
-            </a>
+
+            <div class="col-lg-3 col-md-6">
+                <div class="tech-card">
+                    <i class="bi bi-database-fill"></i>
+                    <h5>Database</h5>
+                    <p>MySQL 8+</p>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+                <div class="tech-card">
+                    <i class="bi bi-diagram-3-fill"></i>
+                    <h5>ORM</h5>
+                    <p>Dapper</p>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+                <div class="tech-card">
+                    <i class="bi bi-shield-fill-check"></i>
+                    <h5>Authentication</h5>
+                    <p>Session + BCrypt</p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+<!-- SLIDE 4 (REVISED CORE FEATURES - COMPACT) -->
+<section class="presentation-slide section-light">
+
+    <div class="container py-5">
+
+        <div class="section-heading text-center mb-4">
+            <div class="slide-number">03</div>
+            <h2>Core Features</h2>
+            <p>Main functionalities included in the system</p>
+        </div>
+
+        <div class="row g-3">
+
+            <div class="col-md-6 col-lg-3">
+                <div class="feature-mini-card h-100">
+                    <i class="bi bi-person-plus-fill"></i>
+                    <h6>Registration</h6>
+                    <p>Company & Applicant accounts</p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+                <div class="feature-mini-card h-100">
+                    <i class="bi bi-briefcase-fill"></i>
+                    <h6>Job Posting</h6>
+                    <p>Create and manage job listings</p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+                <div class="feature-mini-card h-100">
+                    <i class="bi bi-send-check-fill"></i>
+                    <h6>Applications</h6>
+                    <p>Apply directly through system</p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+                <div class="feature-mini-card h-100">
+                    <i class="bi bi-bar-chart-fill"></i>
+                    <h6>Tracking</h6>
+                    <p>Monitor application status</p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- SLIDE 5 -->
+<section class="presentation-slide section-dark">
+    <div class="container py-5">
+
+        <div class="section-heading text-center mb-5">
+            <div class="slide-number">04</div>
+            <h2>Database Structure</h2>
+            <p>Main tables used in the system</p>
+        </div>
+
+        <div class="row g-4">
+
+            <div class="col-md-3">
+                <div class="db-card">
+                    <i class="bi bi-person-fill"></i>
+                    <h5>users</h5>
+                    <p>User accounts and roles</p>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="db-card">
+                    <i class="bi bi-building"></i>
+                    <h5>companies</h5>
+                    <p>Company profiles</p>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="db-card">
+                    <i class="bi bi-briefcase-fill"></i>
+                    <h5>job_postings</h5>
+                    <p>Job listings</p>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="db-card">
+                    <i class="bi bi-send-fill"></i>
+                    <h5>applications</h5>
+                    <p>Submitted applications</p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+<!-- SLIDE 6 -->
+<section class="presentation-slide workflow-slide">
+    <div class="container py-5">
+
+        <div class="section-heading text-center mb-5">
+            <div class="slide-number">05</div>
+            <h2>System Workflow</h2>
+            <p>How users interact with the platform</p>
+        </div>
+
+        <div class="workflow-container">
+
+            <div class="workflow-step">
+                <div class="workflow-circle">1</div>
+                <h5>Register</h5>
+                <p>Create account</p>
+            </div>
+
+            <div class="workflow-arrow"><i class="bi bi-arrow-right"></i></div>
+
+            <div class="workflow-step">
+                <div class="workflow-circle">2</div>
+                <h5>Post / Browse</h5>
+                <p>Jobs listing</p>
+            </div>
+
+            <div class="workflow-arrow"><i class="bi bi-arrow-right"></i></div>
+
+            <div class="workflow-step">
+                <div class="workflow-circle">3</div>
+                <h5>Apply</h5>
+                <p>Submit application</p>
+            </div>
+
+            <div class="workflow-arrow"><i class="bi bi-arrow-right"></i></div>
+
+            <div class="workflow-step">
+                <div class="workflow-circle">4</div>
+                <h5>Track</h5>
+                <p>Monitor status</p>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+<!-- SLIDE 7 -->
+<section class="presentation-slide section-light">
+
+    <div class="container py-5">
+
+        <div class="section-heading text-center mb-5">
+            <div class="slide-number">06</div>
+            <h2>Latest Opportunities</h2>
+            <p>Recently posted jobs</p>
         </div>
 
         <div class="row g-4">
             @await Html.PartialAsync("_JobCard", Model)
         </div>
+
     </div>
+
 </section>
 
-<!-- ─── Why JobPortal ─── -->
-<section class="why-section py-6">
-    <div class="container">
-        <h2 class="section-title text-center mb-5">Why Choose JobPortal?</h2>
-        <div class="row g-4">
-            <div class="col-md-4">
-                <div class="feature-card text-center p-4">
-                    <div class="feature-icon mb-3"><i class="bi bi-shield-check-fill"></i></div>
-                    <h5 class="fw-bold text-white mb-2">Verified Employers</h5>
-                    <p class="text-muted small">All companies are vetted. Browse with confidence knowing every listing is legitimate.</p>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="feature-card text-center p-4">
-                    <div class="feature-icon mb-3"><i class="bi bi-lightning-charge-fill"></i></div>
-                    <h5 class="fw-bold text-white mb-2">Apply in Seconds</h5>
-                    <p class="text-muted small">Create your account, write your cover letter, and submit — all in under two minutes.</p>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="feature-card text-center p-4">
-                    <div class="feature-icon mb-3"><i class="bi bi-graph-up-arrow"></i></div>
-                    <h5 class="fw-bold text-white mb-2">Track Your Progress</h5>
-                    <p class="text-muted small">Monitor application statuses in real-time — from pending to accepted.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- ─── CTA Banner ─── -->
+<!-- SLIDE 8 -->
 @if (Context.Session.GetString("userId") == null)
 {
-    <section class="cta-section py-5">
-        <div class="container text-center">
-            <h2 class="cta-title mb-3">Ready to Take the Next Step?</h2>
-            <p class="text-muted mb-4">Join thousands of professionals already using JobPortal to advance their careers.</p>
-            <div class="d-flex gap-3 justify-content-center">
-                <a asp-controller="Auth" asp-action="Register" class="btn btn-primary btn-lg px-5">
-                    Get Started — It's Free
+    <section class="presentation-slide final-slide">
+
+        <div class="container text-center py-5">
+
+            <div class="slide-number mx-auto">07</div>
+
+            <h2 class="final-title">Start Your Career Journey Today</h2>
+
+            <p class="final-subtitle">
+                Connect with employers, discover opportunities,
+                and grow your future with JobPortal.
+            </p>
+
+            <div class="d-flex justify-content-center gap-3 flex-wrap mt-4">
+
+                <a asp-controller="Auth" asp-action="Register"
+                   class="btn btn-primary btn-lg px-5 py-3">
+                    Create Account
                 </a>
-                <a asp-controller="Auth" asp-action="Login" class="btn btn-outline-light btn-lg px-5">
-                    Sign In
+
+                <a asp-controller="Auth" asp-action="Login"
+                   class="btn btn-outline-success btn-lg px-5 py-3">
+                    Login
                 </a>
+
             </div>
+
         </div>
+
     </section>
 }
+
+<style>
+
+    body {
+        background: #f5fff3;
+        color: #1f2937;
+    }
+
+    .presentation-slide {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .container {
+        position: relative;
+        z-index: 2;
+    }
+
+    /* HERO */
+    .hero-slide {
+        min-height: 100vh;
+        background: radial-gradient(circle at top right, rgba(255, 221, 87, .45), transparent 35%), radial-gradient(circle at bottom left, rgba(163, 230, 53, .35), transparent 40%), linear-gradient(135deg, #fefce8, #ecfccb);
+    }
+
+    .slide-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to right, rgba(0,0,0,.03) 1px, transparent 1px), linear-gradient(to bottom, rgba(0,0,0,.03) 1px, transparent 1px);
+        background-size: 40px 40px;
+    }
+
+    .presentation-tag {
+        display: inline-block;
+        padding: 10px 20px;
+        border-radius: 999px;
+        background: rgba(255,255,255,.7);
+        border: 1px solid rgba(163,230,53,.2);
+        font-size: .9rem;
+        font-weight: 600;
+    }
+
+    .hero-title {
+        font-size: clamp(3rem, 7vw, 6rem);
+        line-height: 1;
+        font-weight: 800;
+        color: #1f2937;
+    }
+
+    .hero-description {
+        color: rgba(31,41,55,.75);
+        font-size: 1.15rem;
+        max-width: 620px;
+    }
+
+    .hero-features {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .feature-pill {
+        padding: 12px 18px;
+        border-radius: 14px;
+        background: rgba(255,255,255,.75);
+        border: 1px solid rgba(163,230,53,.18);
+        font-size: .95rem;
+    }
+
+    /* PREVIEW */
+    .system-preview-card {
+        background: rgba(255,255,255,.85);
+        border: 1px solid rgba(163,230,53,.18);
+        border-radius: 28px;
+        overflow: hidden;
+        backdrop-filter: blur(12px);
+        box-shadow: 0 20px 40px rgba(0,0,0,.08);
+    }
+
+    .preview-header {
+        display: flex;
+        gap: 10px;
+        padding: 18px;
+        border-bottom: 1px solid rgba(163,230,53,.18);
+    }
+
+    .preview-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+    }
+
+    .red {
+        background: #ef4444;
+    }
+
+    .yellow {
+        background: #facc15;
+    }
+
+    .green {
+        background: #84cc16;
+    }
+
+    .preview-body {
+        padding: 35px;
+    }
+
+    .preview-stat-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 18px;
+    }
+
+    .preview-stat {
+        padding: 25px;
+        border-radius: 20px;
+        background: rgba(255,255,255,.8);
+        border: 1px solid rgba(163,230,53,.18);
+        text-align: center;
+    }
+
+        .preview-stat h2 {
+            font-size: 2rem;
+            margin-bottom: 8px;
+            color: #65a30d;
+        }
+
+    .preview-tech {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .tech-item {
+        padding: 10px 16px;
+        border-radius: 12px;
+        background: rgba(250,204,21,.12);
+        border: 1px solid rgba(250,204,21,.18);
+        font-size: .9rem;
+    }
+
+    /* SECTIONS */
+    .section-light {
+        background: #ffffff;
+    }
+
+    .section-dark {
+        background: #f0fdf4;
+    }
+
+    .workflow-slide {
+        background: linear-gradient(135deg, #fef9c3, #dcfce7);
+    }
+
+    .final-slide {
+        background: radial-gradient(circle at center, rgba(250, 204, 21, .25), transparent 40%), linear-gradient(135deg, #fefce8, #dcfce7);
+    }
+
+    .section-heading h2 {
+        font-size: 3rem;
+        font-weight: 800;
+    }
+
+    .section-heading p {
+        color: rgba(31,41,55,.7);
+    }
+
+    .slide-number {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #fde047, #84cc16);
+        color: #1f2937;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: auto auto 20px;
+        font-weight: 800;
+    }
+
+    /* NEW FEATURE CARDS */
+    .feature-mini-card {
+        background: rgba(255,255,255,.85);
+        border: 1px solid rgba(163,230,53,.18);
+        border-radius: 18px;
+        padding: 20px;
+        text-align: center;
+        box-shadow: 0 8px 20px rgba(0,0,0,.05);
+        transition: .3s;
+    }
+
+        .feature-mini-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-mini-card i {
+            font-size: 2rem;
+            color: #65a30d;
+            margin-bottom: 10px;
+        }
+
+        .feature-mini-card h6 {
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .feature-mini-card p {
+            font-size: .9rem;
+            color: rgba(31,41,55,.7);
+            margin: 0;
+        }
+
+    /* INFO / TECH / DB CARDS */
+    .info-card,
+    .tech-card,
+    .db-card {
+        background: rgba(255,255,255,.85);
+        border: 1px solid rgba(163,230,53,.18);
+        border-radius: 24px;
+        padding: 35px;
+        transition: .3s;
+        box-shadow: 0 10px 25px rgba(0,0,0,.05);
+    }
+
+        .info-card:hover,
+        .tech-card:hover,
+        .db-card:hover {
+            transform: translateY(-8px);
+        }
+
+    .info-icon {
+        width: 70px;
+        height: 70px;
+        border-radius: 18px;
+        background: linear-gradient(135deg, #fde047, #84cc16);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+        color: #1f2937;
+    }
+
+    .tech-card {
+        text-align: center;
+        height: 100%;
+    }
+
+        .tech-card i,
+        .db-card i {
+            font-size: 2.5rem;
+            color: #65a30d;
+            margin-bottom: 18px;
+        }
+
+    /* WORKFLOW */
+    .workflow-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .workflow-step {
+        width: 220px;
+        text-align: center;
+        background: rgba(255,255,255,.85);
+        padding: 30px 20px;
+        border-radius: 24px;
+        box-shadow: 0 10px 25px rgba(0,0,0,.05);
+    }
+
+    .workflow-circle {
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #fde047, #84cc16);
+        color: #1f2937;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: auto auto 20px;
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+
+    .workflow-arrow {
+        font-size: 2rem;
+        color: #84cc16;
+    }
+
+    /* CTA */
+    .final-title {
+        font-size: 3.5rem;
+        font-weight: 800;
+    }
+
+    .final-subtitle {
+        color: rgba(31,41,55,.7);
+        max-width: 700px;
+        margin: auto;
+    }
+
+    /* BUTTONS */
+    .btn-primary {
+        background: linear-gradient(135deg, #fde047, #84cc16);
+        border: none;
+        border-radius: 14px;
+        color: #1f2937;
+        font-weight: 700;
+    }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #facc15, #65a30d);
+            color: #1f2937;
+        }
+
+    .btn-outline-success {
+        border-radius: 14px;
+        font-weight: 700;
+    }
+
+    /* RESPONSIVE */
+    @@media (max-width: 991px) {
+        .hero-title {
+            font-size: 4rem;
+        }
+
+        .section-heading h2 {
+            font-size: 2.3rem;
+        }
+
+        .system-preview-card {
+            margin-top: 50px;
+        }
+    }
+
+    @@media (max-width: 768px) {
+        .hero-title {
+            font-size: 3rem;
+        }
+
+        .preview-stat-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .workflow-arrow {
+            transform: rotate(90deg);
+        }
+    }
+
+</style>
