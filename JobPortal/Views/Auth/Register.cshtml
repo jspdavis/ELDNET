@@ -153,6 +153,25 @@
             }
         }
 
+                function updateRoleUI() {
+            const isCompany = document.getElementById('roleCompany').checked;
+
+            const applicantCard = document.getElementById('roleApplicantCard');
+            const companyCard = document.getElementById('roleCompanyCard');
+            const companyFields = document.getElementById('companyFields');
+
+            applicantCard.classList.remove('selected');
+            companyCard.classList.remove('selected');
+
+            if (isCompany) {
+                companyCard.classList.add('selected');
+                companyFields.classList.remove('d-none');
+            } else {
+                applicantCard.classList.add('selected');
+                companyFields.classList.add('d-none');
+            }
+        }
+
         document.querySelectorAll('.role-radio').forEach(radio => {
             radio.addEventListener('change', updateRoleUI);
         });

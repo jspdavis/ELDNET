@@ -127,37 +127,37 @@ INSERT INTO job_postings (company_id, category_id, title, description, requireme
 (1, 1, 'Senior Backend Developer',
  'Join our core engineering team to build scalable REST APIs and microservices for our enterprise clients.',
  'At least 3 years experience in C# or Java. Experience with Docker and Kubernetes is a plus.',
- 'Makati, Metro Manila', '₱80,000 – ₱120,000/month', TRUE, '2025-02-01 09:00:00'),
+ 'Makati, Metro Manila', 'PHP 80,000', TRUE, '2025-02-01 09:00:00'),
 
 (1, 1, 'Junior Frontend Developer',
  'Work alongside senior developers to build responsive web interfaces using React and TypeScript.',
  'Graduate of Computer Science or related field. Knowledge of HTML, CSS, JavaScript required.',
- 'Remote', '₱30,000 – ₱50,000/month', TRUE, '2025-02-05 10:00:00'),
+ 'Remote', 'PHP 30,000', TRUE, '2025-02-05 10:00:00'),
 
 (2, 2, 'UI/UX Designer',
  'Design intuitive user experiences for mobile and web applications. Collaborate with product and dev teams.',
  'Proficient in Figma or Adobe XD. Portfolio of at least 3 live projects required.',
- 'BGC, Taguig', '₱45,000 – ₱70,000/month', TRUE, '2025-02-08 11:00:00'),
+ 'BGC, Taguig', 'PHP 45,000', TRUE, '2025-02-08 11:00:00'),
 
 (3, 3, 'Digital Marketing Specialist',
  'Plan and execute SEO, SEM, and social media campaigns for our diverse client portfolio.',
  'At least 2 years of digital marketing experience. Google Ads and Meta Ads certification preferred.',
- 'Ortigas, Pasig City', '₱35,000 – ₱55,000/month', TRUE, '2025-02-10 09:30:00'),
+ 'Ortigas, Pasig City', 'PHP 35,000', TRUE, '2025-02-10 09:30:00'),
 
 (3, 3, 'Content Writer',
  'Create compelling blog posts, ad copy, and email campaigns that drive engagement and conversions.',
  'Excellent written English. Experience in SEO writing is an advantage.',
- 'Remote', '₱20,000 – ₱35,000/month', TRUE, '2025-02-12 14:00:00'),
+ 'Remote', 'PHP 20,000', TRUE, '2025-02-12 14:00:00'),
 
 (1, 4, 'Accounting Analyst',
  'Handle financial reporting, accounts reconciliation, and budget monitoring for our finance team.',
  'CPA or accounting graduate. 1–2 years relevant experience preferred.',
- 'Makati, Metro Manila', '₱40,000 – ₱60,000/month', TRUE, '2025-02-15 08:00:00'),
+ 'Makati, Metro Manila', 'PHP 40,000', TRUE, '2025-02-15 08:00:00'),
 
 (2, 2, 'Graphic Designer',
  'Create visual assets for social media, print, and digital advertising campaigns.',
  'Proficient in Adobe Photoshop and Illustrator. Strong eye for layout and typography.',
- 'BGC, Taguig', '₱28,000 – ₱42,000/month', TRUE, '2025-02-18 13:00:00');
+ 'BGC, Taguig', 'PHP 28,000', TRUE, '2025-02-18 13:00:00');
 
 -- Sample applications
 INSERT INTO applications (job_id, user_id, cover_letter, status, applied_at) VALUES
