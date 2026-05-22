@@ -26,6 +26,7 @@ builder.Services.AddScoped<IUserService,        UserService>();
 builder.Services.AddScoped<IJobService,         JobService>();
 builder.Services.AddScoped<IApplicationService, ApplicationService>();
 builder.Services.AddScoped<IAdminService,       AdminService>();
+builder.Services.AddScoped<IProfileService,     ProfileService>();
 
 // ── HttpContextAccessor ───────────────────────────────────────────────────────
 // Needed so Razor views can access HttpContext.Session

@@ -30,6 +30,21 @@ CREATE TABLE IF NOT EXISTS companies (
     description  TEXT,
     location     VARCHAR(200),
     website      VARCHAR(255),
+    profile_picture_url VARCHAR(500),
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
+);
+
+-- ============================================================
+-- TABLE: applicant_profiles
+-- Extended profile data for applicant users
+-- ============================================================
+CREATE TABLE IF NOT EXISTS applicant_profiles (
+    profile_id     INT AUTO_INCREMENT PRIMARY KEY,
+    user_id        INT NOT NULL UNIQUE,
+    phone          VARCHAR(20),
+    location       VARCHAR(200),
+    bio            TEXT,
+    profile_picture_url VARCHAR(500),
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
 

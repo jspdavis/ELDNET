@@ -1,0 +1,57 @@
+@model JobPortal.Models.ApplicantProfile
+@{
+    ViewData["Title"] = "Applicant Profile";
+}
+
+<section class="py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                
+                <!-- Back Link -->
+                <a asp-controller="Jobs" asp-action="Index" class="btn-back mb-4 d-inline-flex align-items-center gap-2">
+                    <i class="bi bi-arrow-left"></i> Back to Listings
+                </a>
+
+                <div class="detail-card p-4 p-md-5">
+                    <div class="d-flex justify-content-between align-items-start flex-wrap gap-3 mb-4">
+                        <div>
+                            <h1 class="detail-title mb-1">@Model.FullName</h1>
+                            <p class="text-muted">
+                                <i class="bi bi-envelope me-1"></i>@Model.Email
+                            </p>
+                        </div>
+                        <a asp-action="Edit" class="btn btn-outline-cerulean">
+                            <i class="bi bi-pencil me-1"></i>Edit Profile
+                        </a>
+                    </div>
+
+                    <!-- Meta Info Row -->
+                    <div class="detail-meta-row d-flex flex-wrap gap-4 mb-5">
+                        <div class="detail-meta-item">
+                            <i class="bi bi-geo-alt-fill text-primary"></i>
+                            <span class="@(string.IsNullOrWhiteSpace(Model.Location) ? "text-muted" : "")">
+                                @(string.IsNullOrWhiteSpace(Model.Location) ? "Not provided" : Model.Location)
+                            </span>
+                        </div>
+                        <div class="detail-meta-item">
+                            <i class="bi bi-telephone-fill text-primary"></i>
+                            <span class="@(string.IsNullOrWhiteSpace(Model.Phone) ? "text-muted" : "")">
+                                @(string.IsNullOrWhiteSpace(Model.Phone) ? "Not provided" : Model.Phone)
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Bio -->
+                    <div class="detail-section">
+                        <h4 class="section-heading">Bio</h4>
+                        <p class="lh-lg @(string.IsNullOrWhiteSpace(Model.Bio) ? "text-muted" : "text-secondary")">
+                            @(string.IsNullOrWhiteSpace(Model.Bio) ? "Not provided" : Model.Bio)
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

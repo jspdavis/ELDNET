@@ -14,6 +14,7 @@ namespace JobPortal.Models
         [Required(ErrorMessage = "Email is required.")]
         [EmailAddress(ErrorMessage = "Please enter a valid email address.")]
         [StringLength(255, ErrorMessage = "Email cannot exceed 255 characters.")]
+        [RegularExpression(@"^[^@\s]+@[^@\s]+\.[^@\s]+$", ErrorMessage = "Please enter a valid email address.")]
         public string Email { get; set; } = string.Empty;
 
         [Required]

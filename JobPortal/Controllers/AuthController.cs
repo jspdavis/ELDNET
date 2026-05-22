@@ -1,7 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using JobPortal.Models.ViewModels;
 using JobPortal.Services;
-
+using JobPortal.Data;
+using Dapper;
 namespace JobPortal.Controllers
 {
     /// <summary>
@@ -11,10 +12,12 @@ namespace JobPortal.Controllers
     public class AuthController : Controller
     {
         private readonly IUserService _userService;
+        private readonly DatabaseContext _context;
 
-        public AuthController(IUserService userService)
+        public AuthController(IUserService userService, DatabaseContext context)
         {
             _userService = userService;
+            _context = context;
         }
 
         // ── GET /Auth/Login ──────────────────────────────────────────────────
@@ -124,6 +127,11 @@ namespace JobPortal.Controllers
                     model.CompanyLocation    ?? string.Empty,
                     model.CompanyWebsite     ?? string.Empty
                 );
+            }
+            else if (model.Role == "applicant")
+            {
+                using var db = _context.CreateConnection();
+                await db.ExecuteAsync("INSERT IGNORE INTO applicant_profiles (user_id) VALUES (@userId);", new { userId = newUserId });
             }
 
             // Auto-login: set session variables

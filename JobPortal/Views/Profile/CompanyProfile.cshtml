@@ -1,0 +1,62 @@
+@model JobPortal.Models.CompanyProfile
+@{
+    ViewData["Title"] = "Company Profile";
+}
+
+<section class="py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+
+                <!-- Back Link -->
+                <a asp-controller="Company" asp-action="Dashboard" class="btn-back mb-4 d-inline-flex align-items-center gap-2">
+                    <i class="bi bi-arrow-left"></i> Back to Dashboard
+                </a>
+
+                <div class="detail-card p-4 p-md-5">
+                    <div class="d-flex justify-content-between align-items-start flex-wrap gap-3 mb-4">
+                        <div>
+                            <h1 class="detail-title mb-1">@Model.CompanyName</h1>
+                            <p class="text-muted">
+                                <i class="bi bi-person me-1"></i>@Model.FullName | <i class="bi bi-envelope me-1"></i>@Model.Email
+                            </p>
+                        </div>
+                        <a asp-action="Edit" class="btn btn-outline-cerulean">
+                            <i class="bi bi-pencil me-1"></i>Edit Profile
+                        </a>
+                    </div>
+
+                    <!-- Meta Info Row -->
+                    <div class="detail-meta-row d-flex flex-wrap gap-4 mb-5">
+                        <div class="detail-meta-item">
+                            <i class="bi bi-geo-alt-fill text-primary"></i>
+                            <span class="@(string.IsNullOrWhiteSpace(Model.Location) ? "text-muted" : "")">
+                                @(string.IsNullOrWhiteSpace(Model.Location) ? "Not provided" : Model.Location)
+                            </span>
+                        </div>
+                        <div class="detail-meta-item">
+                            <i class="bi bi-globe text-primary"></i>
+                            @if (string.IsNullOrWhiteSpace(Model.Website))
+                            {
+                                <span class="text-muted">Not provided</span>
+                            }
+                            else
+                            {
+                                <span><a href="@Model.Website" target="_blank" class="text-primary fw-semibold">@Model.Website</a></span>
+                            }
+                        </div>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="detail-section">
+                        <h4 class="section-heading">Company Description</h4>
+                        <p class="lh-lg @(string.IsNullOrWhiteSpace(Model.Description) ? "text-muted" : "text-secondary")">
+                            @(string.IsNullOrWhiteSpace(Model.Description) ? "Not provided" : Model.Description)
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
