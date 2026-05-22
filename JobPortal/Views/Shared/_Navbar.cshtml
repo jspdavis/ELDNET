@@ -3,139 +3,167 @@
     var userId   = Context.Session.GetString("userId");
     var role     = Context.Session.GetString("userRole");
     var fullName = Context.Session.GetString("fullName");
-    bool isLoggedIn = userId != null;
-    bool isCompany  = role == "company";
-    bool isApplicant= role == "applicant";
+
+    bool isLoggedIn  = userId != null;
+    bool isCompany   = role == "company";
+    bool isApplicant = role == "applicant";
+    bool isAdmin     = role == "admin";
 }
 
-<!-- ─── Mobile Header Bar (Only visible below lg screens) ─── -->
-<div class="mobile-header-bar d-flex d-lg-none align-items-center justify-content-between px-4 py-3 shadow-sm">
-    <a class="navbar-brand-custom" asp-controller="Home" asp-action="Index">
-        <div class="brand-icon">
-            <i class="bi bi-layers-fill"></i>
-        </div>
-        <div class="brand-name">Job<span>Portal</span></div>
-    </a>
-    <button class="btn btn-icon-only text-accent-cerulean border-0 p-0 fs-3" type="button" 
-            data-bs-toggle="offcanvas" data-bs-target="#sidebarOffcanvas" 
-            aria-controls="sidebarOffcanvas">
-        <i class="bi bi-list"></i>
-    </button>
-</div>
+<header class="jp-topbar" id="jp-topbar">
+    <div class="jp-topbar-brand">
 
-<!-- ─── Responsive Sidebar (Always visible on lg+, Offcanvas drawer on <lg) ─── -->
-<aside id="sidebarOffcanvas" class="dashboard-sidebar offcanvas-lg offcanvas-start border-end" tabindex="-1" aria-labelledby="sidebarOffcanvasLabel">
-    <div class="offcanvas-header d-lg-none border-bottom px-4 py-3">
-        <h5 class="offcanvas-title fw-bold d-flex align-items-center gap-2" id="sidebarOffcanvasLabel">
-            <i class="bi bi-briefcase-fill text-accent-gold"></i>
-            <span class="text-accent-cerulean">JobPortal</span>
-        </h5>
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#sidebarOffcanvas" aria-label="Close"></button>
+        <a class="jp-brand-link" asp-controller="Home" asp-action="Index" aria-label="JobPortal Home">
+            <div class="jp-brand-icon">
+                <i class="bi bi-layers-fill"></i>
+            </div>
+            <span class="jp-brand-name">Job<span class="jp-brand-accent">Portal</span></span>
+        </a>
+
+        <button id="jp-menu-toggle"
+                class="jp-hamburger"
+                type="button"
+                aria-label="Toggle navigation menu"
+                aria-expanded="false"
+                aria-controls="jp-dropdown-nav">
+            <span class="jp-hamburger-bar"></span>
+            <span class="jp-hamburger-bar"></span>
+            <span class="jp-hamburger-bar"></span>
+        </button>
+
     </div>
-    
-    <div class="offcanvas-body d-flex flex-column p-0 h-100">
-        <!-- Logo (Desktop Only) -->
-        <div class="sidebar-logo d-none d-lg-flex align-items-center px-4 py-4 border-bottom">
-            <a class="navbar-brand-custom" asp-controller="Home" asp-action="Index">
-                <div class="brand-icon">
-                    <i class="bi bi-layers-fill"></i>
-                </div>
-                <div class="brand-name">Job<span>Portal</span></div>
-            </a>
-        </div>
-        
-        <!-- Navigation Menu -->
-        <div class="sidebar-menu flex-grow-1 px-3 py-4">
-            <div class="menu-group-label text-accent-cerulean-muted small mb-2 px-3 text-uppercase tracking-wider fw-semibold">Menu</div>
-            <ul class="nav flex-column gap-1 mb-4">
-                <li class="nav-item">
-                    <a class="nav-link-custom d-flex align-items-center gap-3 px-3 py-2 rounded" asp-controller="Home" asp-action="Index">
-                        <i class="bi bi-house-door fs-5"></i><span>Home</span>
+
+    <nav id="jp-dropdown-nav"
+         class="jp-dropdown-nav"
+         aria-hidden="true"
+         role="navigation"
+         aria-label="Site navigation">
+
+        <div class="jp-dropdown-inner">
+
+            <div class="jp-dropdown-section-label">Menu</div>
+
+            <ul class="jp-dropdown-list" role="list">
+                <li>
+                    <a class="jp-dropdown-link" asp-controller="Home" asp-action="Index">
+                        <i class="bi bi-house-door"></i>
+                        <span>Home</span>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link-custom d-flex align-items-center gap-3 px-3 py-2 rounded" asp-controller="Jobs" asp-action="Index">
-                        <i class="bi bi-search fs-5"></i><span>Browse Jobs</span>
+                <li>
+                    <a class="jp-dropdown-link" asp-controller="Jobs" asp-action="Index">
+                        <i class="bi bi-search"></i>
+                        <span>Browse Jobs</span>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link-custom d-flex align-items-center gap-3 px-3 py-2 rounded" asp-controller="Home" asp-action="About">
-                        <i class="bi bi-info-circle fs-5"></i><span>About Portal</span>
+                <li>
+                    <a class="jp-dropdown-link" asp-controller="Home" asp-action="About">
+                        <i class="bi bi-info-circle"></i>
+                        <span>About Portal</span>
                     </a>
                 </li>
             </ul>
 
             @if (isLoggedIn)
             {
-                <div class="menu-group-label text-accent-cerulean-muted small mb-2 px-3 text-uppercase tracking-wider fw-semibold">
-                    @(isApplicant ? "Applicant Panel" : "Employer Panel")
-                </div>
-                <ul class="nav flex-column gap-1 mb-4">
-                    @if (isApplicant)
+            <div class="jp-dropdown-section-label jp-dropdown-section-label--mt">
+                @(isAdmin ? "Admin Panel" : isApplicant ? "Applicant Panel" : "Employer Panel")
+            </div>
+
+            <ul class="jp-dropdown-list" role="list">
+                @if (isAdmin)
                     {
-                        <li class="nav-item">
-                            <a class="nav-link-custom d-flex align-items-center gap-3 px-3 py-2 rounded" asp-controller="Applications" asp-action="Index">
-                                <i class="bi bi-file-earmark-text fs-5"></i><span>My Applications</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link-custom d-flex align-items-center gap-3 px-3 py-2 rounded" asp-controller="Applications" asp-action="Track">
-                                <i class="bi bi-diagram-3 fs-5"></i><span>Application Pipeline</span>
-                            </a>
-                        </li>
+                <li>
+                    <a class="jp-dropdown-link" asp-controller="Admin" asp-action="Dashboard">
+                        <i class="bi bi-shield-lock"></i>
+                        <span>Admin Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="jp-dropdown-link" asp-controller="Admin" asp-action="Users">
+                        <i class="bi bi-people"></i>
+                        <span>User Management</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="jp-dropdown-link" asp-controller="Admin" asp-action="Jobs">
+                        <i class="bi bi-briefcase"></i>
+                        <span>Manage Jobs</span>
+                    </a>
+                </li>
+                    }
+                    else if (isApplicant)
+                    {
+                <li>
+                    <a class="jp-dropdown-link" asp-controller="Applications" asp-action="Index">
+                        <i class="bi bi-file-earmark-text"></i>
+                        <span>My Applications</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="jp-dropdown-link" asp-controller="Applications" asp-action="Track">
+                        <i class="bi bi-diagram-3"></i>
+                        <span>Application Pipeline</span>
+                    </a>
+                </li>
                     }
                     else if (isCompany)
                     {
-                        <li class="nav-item">
-                            <a class="nav-link-custom d-flex align-items-center gap-3 px-3 py-2 rounded" asp-controller="Company" asp-action="Dashboard">
-                                <i class="bi bi-grid fs-5"></i><span>Dashboard</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link-custom d-flex align-items-center gap-3 px-3 py-2 rounded" asp-controller="Jobs" asp-action="Create">
-                                <i class="bi bi-plus-circle fs-5"></i><span>Post Job</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link-custom d-flex align-items-center gap-3 px-3 py-2 rounded" asp-controller="Company" asp-action="Profile">
-                                <i class="bi bi-building-gear fs-5"></i><span>Edit Profile</span>
-                            </a>
-                        </li>
-                    }
-                </ul>
-            }
-        </div>
-
-        <!-- User Profile Block / Login (Bottom of Sidebar) -->
-        <div class="sidebar-footer p-3 border-top mt-auto">
-            @if (isLoggedIn)
-            {
-                <div class="d-flex align-items-center justify-content-between p-2 rounded sidebar-user-card">
-                    <div class="d-flex align-items-center gap-2 overflow-hidden">
-                        <div class="nav-avatar-custom flex-shrink-0 @(isCompany ? "company" : "")">
-                            @(fullName?.Substring(0,1).ToUpper())
-                        </div>
-                        <div class="user-info-text overflow-hidden">
-                            <div class="fw-semibold text-truncate text-accent-cerulean small">@fullName</div>
-                            <div class="text-muted text-truncate" style="font-size: 0.72rem;">@(isApplicant ? "Applicant Account" : "Employer Account")</div>
-                        </div>
-                    </div>
-                    <a class="logout-btn-custom text-danger ms-2 flex-shrink-0" asp-controller="Auth" asp-action="Logout" title="Logout">
-                        <i class="bi bi-box-arrow-right fs-5"></i>
+                <li>
+                    <a class="jp-dropdown-link" asp-controller="Company" asp-action="Dashboard">
+                        <i class="bi bi-grid"></i>
+                        <span>Dashboard</span>
                     </a>
+                </li>
+                <li>
+                    <a class="jp-dropdown-link" asp-controller="Jobs" asp-action="Create">
+                        <i class="bi bi-plus-circle"></i>
+                        <span>Post Job</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="jp-dropdown-link" asp-controller="Company" asp-action="Profile">
+                        <i class="bi bi-building-gear"></i>
+                        <span>Edit Profile</span>
+                    </a>
+                </li>
+                    }
+            </ul>
+
+            <div class="jp-dropdown-divider"></div>
+            <div class="jp-dropdown-user-card">
+                <div class="jp-dropdown-avatar @(isCompany ? "jp-avatar--company" : "")">
+                    @(fullName?.Substring(0, 1).ToUpper())
                 </div>
+                <div class="jp-dropdown-user-info">
+                    <div class="jp-dropdown-user-name">@fullName</div>
+                    <div class="jp-dropdown-user-role">
+                        @(isAdmin ? "Administrator" : isApplicant ? "Applicant Account" : "Employer Account")
+                    </div>
+                </div>
+                <a class="jp-dropdown-logout"
+                   asp-controller="Auth"
+                   asp-action="Logout"
+                   title="Logout">
+                    <i class="bi bi-box-arrow-right"></i>
+                </a>
+            </div>
             }
             else
             {
-                <div class="d-flex flex-column gap-2 p-2">
-                    <a class="btn btn-outline-cerulean btn-sm w-100 py-2 fw-semibold" asp-controller="Auth" asp-action="Login">
-                        Sign In
-                    </a>
-                    <a class="btn btn-accent-gold btn-sm w-100 py-2 fw-semibold" asp-controller="Auth" asp-action="Register">
-                        Get Started
-                    </a>
-                </div>
+            <div class="jp-dropdown-divider"></div>
+            <div class="jp-dropdown-auth-btns">
+                <a class="jp-btn-outline" asp-controller="Auth" asp-action="Login">
+                    Sign In
+                </a>
+                <a class="jp-btn-gold" asp-controller="Auth" asp-action="Register">
+                    Get Started
+                </a>
+            </div>
             }
+
         </div>
-    </div>
-</aside>
+    </nav>
+</header>```
+
+----

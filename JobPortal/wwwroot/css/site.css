@@ -9,14 +9,21 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100;0,9..40,200;0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=DM+Serif+Display&display=swap');
 
 :root {
+    /* ── Brand Identity ── */
+    --brand-teal:         #234E4A;            /* JobPortal Deep Teal (primary) */
+    --brand-teal-dark:    #1A3A36;            /* Darker teal for gradients */
+    --brand-teal-mid:     #2D6460;            /* Mid teal for sidebar grad */
+    --brand-gold:         #FDBF5A;            /* JobPortal Golden-Orange accent */
+    --brand-gold-deep:    #F0A832;            /* Deeper gold for hover states */
+
     /* ── 60% Dominant Canvas ── */
     --bg-primary:         #FCEED7;            /* Creamy Off-White */
     --bg-dark:            #3E5153;            /* Charcoal Slate */
     --bg-gradient:        linear-gradient(160deg, #FCEED7 0%, #F5E2C0 60%, #EDD5AA 100%);
 
     /* ── 30% Structural Layout ── */
-    --bg-sidebar:         #416F6F;            /* Deep Teal */
-    --bg-sidebar-grad:    linear-gradient(180deg, #3A6363 0%, #2C4F4F 60%, #1E3838 100%);
+    --bg-sidebar:         #234E4A;            /* Deep Teal (brand) */
+    --bg-sidebar-grad:    linear-gradient(180deg, #2D6460 0%, #234E4A 60%, #1A3A36 100%);
     --bg-sage:            #628276;            /* Sage */
     --bg-olive:           #9DBEB1;            /* Olive-Grey */
 
@@ -24,22 +31,22 @@
     --bg-card:            rgba(252, 238, 215, 0.55);
     --bg-card-hover:      rgba(252, 238, 215, 0.85);
     --bg-input:           rgba(255, 248, 235, 0.92);
-    --border-color:       rgba(65, 111, 111, 0.2);
+    --border-color:       rgba(35, 78, 74, 0.2);
     --border-highlight:   rgba(255, 255, 255, 0.55);
-    --border-hover:       rgba(65, 111, 111, 0.45);
+    --border-hover:       rgba(35, 78, 74, 0.45);
 
-    /* ── 10% Coordinated Accent System ── */
-    --accent-orange:      #FFD195;            /* Pastel Orange / Honey Gold */
-    --accent-orange-deep: #F5B942;            /* Deeper Orange for CTA contrast */
-    --accent-teal:        #416F6F;            /* Deep Teal */
+    /* ── Accent System ── */
+    --accent-orange:      #FDBF5A;            /* Brand Golden-Orange */
+    --accent-orange-deep: #F0A832;            /* Deeper gold for CTAs */
+    --accent-teal:        #234E4A;            /* Brand Deep Teal */
     --accent-sage:        #628276;            /* Sage */
     --accent-olive:       #9DBEB1;            /* Olive-Grey */
     --accent-slate:       #3E5153;            /* Charcoal Slate */
     --accent-cream:       #FCEED7;            /* Light Cream */
 
     /* ── Status System (Warm-toned, Accessible) ── */
-    --status-pending:     #F5B942;
-    --status-reviewed:    #416F6F;
+    --status-pending:     #F0A832;
+    --status-reviewed:    #234E4A;
     --status-accepted:    #628276;
     --status-rejected:    #3E5153;
 
@@ -50,10 +57,18 @@
     --text-light:         #FCEED7;            /* Cream White */
     --text-on-dark:       #FCEED7;
 
-    /* ── Dynamic Multi-Stop Gradients ── */
-    --grad-banner:        linear-gradient(135deg, #416F6F 0%, #628276 100%);
-    --grad-cta:           linear-gradient(135deg, #FFD195 0%, #F5B942 100%);
-    --grad-sidebar-logo:  linear-gradient(135deg, #FFD195 0%, #F5B942 80%);
+    /* ── Multi-Stop Gradients ── */
+    --grad-banner:        linear-gradient(135deg, #234E4A 0%, #628276 100%);
+    --grad-cta:           linear-gradient(135deg, #FDBF5A 0%, #F0A832 100%);
+    --grad-sidebar-logo:  linear-gradient(135deg, #FDBF5A 0%, #F0A832 80%);
+
+    /* ── Top Bar Specifics ── */
+    --topbar-height:      62px;
+    --topbar-bg:          #234E4A;
+    --topbar-shadow:      0 2px 20px rgba(26, 58, 54, 0.35);
+    --dropdown-bg:        #1E3E3A;
+    --dropdown-border:    rgba(253, 191, 90, 0.15);
+    --dropdown-shadow:    0 12px 40px rgba(26, 58, 54, 0.55);
 
     /* ── Border Radii ── */
     --radius-xs:          8px;
@@ -61,10 +76,10 @@
     --radius-md:          20px;
     --radius-lg:          30px;
 
-    /* ── Shadows (Warm-tinted diffused depth) ── */
-    --shadow-card:        0 8px 32px -8px rgba(62, 81, 83, 0.12), 0 2px 8px rgba(62, 81, 83, 0.06);
-    --shadow-hover:       0 20px 50px -12px rgba(62, 81, 83, 0.22), 0 4px 16px rgba(62, 81, 83, 0.1);
-    --shadow-sidebar:     4px 0 24px rgba(30, 56, 56, 0.25);
+    /* ── Shadows ── */
+    --shadow-card:        0 8px 32px -8px rgba(35, 78, 74, 0.12), 0 2px 8px rgba(35, 78, 74, 0.06);
+    --shadow-hover:       0 20px 50px -12px rgba(35, 78, 74, 0.22), 0 4px 16px rgba(35, 78, 74, 0.1);
+    --shadow-sidebar:     4px 0 24px rgba(26, 58, 54, 0.25);
 
     /* ── Glass Blur ── */
     --glass-blur:         blur(18px) saturate(150%);
@@ -118,126 +133,65 @@ h1, h2, h3, h4, h5, h6,
 }
 
 /* ══════════════════════════════════════════════════════════
-   DASHBOARD LAYOUT GRID
+   DASHBOARD LAYOUT  —  Top-Bar Architecture
    ══════════════════════════════════════════════════════════ */
-
-.dashboard-wrapper {
-    display: flex;
-    min-height: 100vh;
-    width: 100%;
-}
 
 .dashboard-main {
-    flex: 1;
     display: flex;
     flex-direction: column;
+    min-height: 100vh;
     min-width: 0;
-    position: relative;
-    padding-left: 285px; /* Sidebar width */
-}
-
-@media (max-width: 991.98px) {
-    .dashboard-main {
-        padding-left: 0;
-    }
+    padding-top: var(--topbar-height); /* Offset for fixed top bar */
 }
 
 /* ══════════════════════════════════════════════════════════
-   MOBILE TOP HEADER BAR
+   JP TOP BAR  —  Fixed Header (Logo + Hamburger only)
    ══════════════════════════════════════════════════════════ */
 
-.mobile-header-bar {
-    background: var(--bg-sidebar-grad);
-    color: var(--text-on-dark);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    box-shadow: var(--shadow-sidebar);
-}
-.mobile-header-bar .navbar-brand-custom {
-    color: var(--text-on-dark) !important;
-}
-
-/* ══════════════════════════════════════════════════════════
-   SIDEBAR NAVIGATION  —  Deep Teal to Midnight Gradient
-   ══════════════════════════════════════════════════════════ */
-
-.dashboard-sidebar {
-    background: var(--bg-sidebar-grad);
-    width: 285px;
-    height: 100vh;
+.jp-topbar {
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 1030;
-    display: flex;
-    flex-direction: column;
-    border-right: 1px solid rgba(255, 255, 255, 0.06);
-    box-shadow: var(--shadow-sidebar);
-    overflow: hidden;
+    right: 0;
+    z-index: 1040;
+    background: var(--topbar-bg);
+    box-shadow: var(--topbar-shadow);
+    border-bottom: 1px solid rgba(253, 191, 90, 0.12);
+
 }
 
-/* Ambient decorative background orbs */
-.dashboard-sidebar::before {
+/* Decorative ambient shimmer on top bar */
+.jp-topbar::before {
     content: '';
-    position: absolute;
-    width: 300px;
-    height: 300px;
-    background: radial-gradient(circle, rgba(255, 209, 149, 0.08) 0%, transparent 70%);
-    top: -60px;
-    right: -80px;
-    pointer-events: none;
-    border-radius: 50%;
-}
-.dashboard-sidebar::after {
-    content: '';
-    position: absolute;
-    width: 200px;
-    height: 200px;
-    background: radial-gradient(circle, rgba(157, 190, 177, 0.1) 0%, transparent 70%);
-    bottom: 60px;
-    left: -50px;
-    pointer-events: none;
-    border-radius: 50%;
-}
-
-/* Mobile offcanvas */
-@media (max-width: 991.98px) {
-    .dashboard-sidebar.offcanvas-lg {
-        position: fixed;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        width: 285px;
-        transform: translateX(-100%);
-        visibility: hidden;
-        transition: transform 0.32s cubic-bezier(0.25, 0.8, 0.25, 1);
-    }
-    .dashboard-sidebar.offcanvas-lg.show {
-        transform: none;
-        visibility: visible;
-    }
-}
-
-/* ── Sidebar Logo Block ── */
-.sidebar-logo {
-    min-height: 76px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     position: relative;
-    z-index: 1;
+    inset: 0;
+    background: linear-gradient(90deg, transparent 40%, rgba(253, 191, 90, 0.04) 100%);
+    pointer-events: none;
 }
 
-.navbar-brand-custom {
-    color: var(--text-on-dark) !important;
-    font-weight: 700 !important;
-    font-size: 1.15rem !important;
-    letter-spacing: -0.02em;
-    text-decoration: none;
+.jp-topbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    height: var(--topbar-height);
+    padding: 0 1.35rem;
+}
+
+/* ── Brand Link (Logo Box + Text) ── */
+.jp-brand-link {
     display: flex;
     align-items: center;
     gap: 10px;
+    text-decoration: none;
+    color: var(--text-on-dark);
+    transition: var(--transition);
+}
+.jp-brand-link:hover {
+    opacity: 0.88;
+    color: var(--text-on-dark);
 }
 
-/* Logo Icon — styled as a geometric badge */
-.navbar-brand-custom .brand-icon {
+.jp-brand-icon {
     width: 36px;
     height: 36px;
     border-radius: 10px;
@@ -245,115 +199,308 @@ h1, h2, h3, h4, h5, h6,
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--accent-slate);
+    color: var(--brand-teal);
     font-size: 1rem;
     font-weight: 800;
-    box-shadow: 0 4px 12px rgba(245, 185, 66, 0.35);
+    box-shadow: 0 4px 12px rgba(253, 191, 90, 0.4);
     flex-shrink: 0;
+    transition: var(--transition);
 }
-.navbar-brand-custom .brand-name {
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 700;
-    font-size: 1.05rem;
-    letter-spacing: -0.03em;
-    color: var(--text-on-dark);
-}
-.navbar-brand-custom .brand-name span {
-    color: var(--accent-orange);
-}
-.navbar-brand-custom i {
-    color: var(--accent-orange) !important;
+.jp-brand-link:hover .jp-brand-icon {
+    box-shadow: 0 6px 18px rgba(253, 191, 90, 0.55);
+    transform: scale(1.05);
 }
 
-/* ── Navigation Menu Labels ── */
-.menu-group-label {
-    font-size: 0.65rem;
+.jp-brand-name {
+    font-family: 'DM Sans', 'Outfit', sans-serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    letter-spacing: -0.03em;
+    color: #ffffff;
+    white-space: nowrap;
+}
+.jp-brand-accent {
+    color: var(--brand-gold);
+}
+
+/* ── Hamburger Button ── */
+.jp-hamburger {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 38px;
+    height: 38px;
+    padding: 7px 6px;
+    background: rgba(253, 191, 90, 0.1);
+    border: 1.5px solid rgba(253, 191, 90, 0.25);
+    border-radius: var(--radius-xs);
+    cursor: pointer;
+    transition: var(--transition);
+    flex-shrink: 0;
+    margin-left: 2px;
+}
+.jp-hamburger:hover {
+    background: rgba(253, 191, 90, 0.18);
+    border-color: rgba(253, 191, 90, 0.5);
+    transform: scale(1.06);
+}
+.jp-hamburger-bar {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background: var(--brand-gold);
+    border-radius: 2px;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    transform-origin: center;
+}
+
+/* Animated X on open state */
+.jp-hamburger[aria-expanded="true"] .jp-hamburger-bar:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+}
+.jp-hamburger[aria-expanded="true"] .jp-hamburger-bar:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0);
+}
+.jp-hamburger[aria-expanded="true"] .jp-hamburger-bar:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+}
+
+/* ══════════════════════════════════════════════════════════
+   JP DROPDOWN NAV  —  Overlay Menu (hidden by default)
+   ══════════════════════════════════════════════════════════ */
+
+.jp-dropdown-nav {
+    /* 1. Switch to absolute so it targets the nearest positioned topbar parent */
+    position: absolute;
+    top: 100%; /* Drops it perfectly flush underneath the header bar */
+    /* 2. Remove the left-wall stretch constraint completely */
+    left: auto;
+    /* 3. Pull it slightly away from the right edge for spacing */
+    right: 1.5rem;
+    /* 4. Enforce a matching locked layout footprint */
+    width: 290px;
+    z-index: 1039;
+    background: #234E4A !important; /* Your exact signature deep teal */
+    border: 1px solid rgba(253, 191, 90, 0.25) !important;
+    border-radius: 12px !important;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.4) !important;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transition: max-height 0.35s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.25s ease;
+}
+
+/* Ambient shimmer inside dropdown */
+.jp-dropdown-nav::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(253, 191, 90, 0.4), transparent);
+}
+
+.jp-dropdown-nav.jp-dropdown-open {
+    max-height: 90vh;
+    opacity: 1;
+    pointer-events: auto;
+    overflow-y: auto;
+}
+
+.jp-dropdown-inner {
+    padding: 1.25rem;
+    max-width: 420px; /* Keeps menu compact & readable */
+}
+
+/* ── Section Label ("MENU", "Admin Panel", etc.) ── */
+.jp-dropdown-section-label {
+    font-size: 0.62rem;
     font-weight: 700;
     letter-spacing: 0.14em;
-    color: rgba(252, 238, 215, 0.4) !important;
     text-transform: uppercase;
-    margin-top: 1.75rem;
-    padding-left: 4px;
+    color: rgba(253, 191, 90, 0.6);
+    padding: 0.25rem 0.5rem;
+    margin-bottom: 0.3rem;
+}
+.jp-dropdown-section-label--mt {
+    margin-top: 1.1rem;
 }
 
-/* ── Nav Links ── */
-.nav-link-custom {
-    color: rgba(252, 238, 215, 0.72) !important;
-    font-weight: 400;
-    font-size: 0.93rem;
+/* ── Nav Link List ── */
+.jp-dropdown-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 0.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.jp-dropdown-link {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    padding: 0.6rem 0.75rem;
     border-radius: var(--radius-xs);
+    color: rgba(252, 238, 215, 0.75) !important;
+    font-size: 0.94rem;
+    font-weight: 400;
+    text-decoration: none;
     transition: var(--transition);
     position: relative;
 }
-.nav-link-custom i {
-    color: rgba(252, 238, 215, 0.55);
+.jp-dropdown-link i {
+    font-size: 1rem;
+    color: rgba(252, 238, 215, 0.5);
     transition: var(--transition);
-    font-size: 1.1rem;
+    flex-shrink: 0;
 }
-.nav-link-custom:hover {
-    color: var(--text-on-dark) !important;
-    background: rgba(255, 255, 255, 0.1);
+.jp-dropdown-link:hover {
+    background: rgba(253, 191, 90, 0.12);
+    color: #ffffff !important;
     transform: translateX(3px);
 }
-.nav-link-custom:hover i {
-    color: var(--accent-orange) !important;
-}
-.nav-link-custom.active,
-.nav-link-custom:focus {
-    background: rgba(255, 209, 149, 0.14);
-    color: var(--accent-orange) !important;
+    .jp-dropdown-link:hover i {
+        color: #FDBF5A;
+    }
+.jp-dropdown-link.active {
+    background: rgba(253, 191, 90, 0.16);
+    color: #FDBF5A;
     font-weight: 600;
-    border-left: 3px solid var(--accent-orange);
+    border-left: 3px solid var(--brand-gold);
+    padding-left: calc(0.75rem - 3px);
 }
-.nav-link-custom.active i {
-    color: var(--accent-orange) !important;
+    .jp-dropdown-link.active i {
+        color: #FDBF5A;
+    }
+
+/* ── Divider ── */
+.jp-dropdown-divider {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.08);
+    margin: 0.85rem 0;
 }
 
-/* ── Sidebar User Card ── */
-.sidebar-user-card {
-    background: rgba(252, 238, 215, 0.07);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+/* ── Auth Buttons (Guest State) ── */
+.jp-dropdown-auth-btns {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 0 0.25rem;
+}
+
+.jp-btn-outline {
+    display: block;
+    text-align: center;
+    padding: 0.6rem 1rem;
+    border: 2px solid rgba(253, 191, 90, 0.6);
+    color: #FDBF5A;
+    background: transparent;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: var(--transition);
+}
+    .jp-btn-outline:hover {
+        background: rgba(253, 191, 90, 0.12);
+        border-color: #FDBF5A;
+        color: #FDBF5A;
+        transform: translateY(-1px);
+    }
+
+.jp-btn-gold {
+    display: block;
+    text-align: center;
+    padding: 0.6rem 1rem;
+    background: #FDBF5A;
+    color: #234E4A;
+    border: none;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-decoration: none;
+    box-shadow: 0 4px 14px rgba(253, 191, 90, 0.35);
+    transition: var(--transition);
+}
+    .jp-btn-gold:hover {
+        background: #F0A832;
+        color: #234E4A;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 22px rgba(253, 191, 90, 0.5);
+    }
+
+/* ── Logged-In User Card ── */
+.jp-dropdown-user-card {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0.6rem 0.75rem;
+    background: rgba(253, 191, 90, 0.08);
+    border: 1px solid rgba(253, 191, 90, 0.2);
     border-radius: var(--radius-xs);
 }
 
-.nav-avatar-custom {
-    width: 40px;
-    height: 40px;
+.jp-dropdown-avatar {
+    width: 38px;
+    height: 38px;
     border-radius: 50%;
-    background: linear-gradient(135deg, var(--accent-teal), #2C4F4F);
+    background: linear-gradient(135deg, #2D6460, #1A3A36);
     color: var(--text-on-dark);
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     font-weight: 700;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 2px solid var(--accent-orange);
-    box-shadow: 0 3px 10px rgba(245, 185, 66, 0.25);
+    border: 2px solid #FDBF5A;
+    box-shadow: 0 3px 10px rgba(253, 191, 90, 0.3);
+    flex-shrink: 0;
 }
-.nav-avatar-custom.company {
-    background: linear-gradient(135deg, var(--accent-orange), var(--accent-orange-deep));
+.jp-avatar--company {
+    background: linear-gradient(135deg, var(--brand-gold), var(--brand-gold-deep));
     border: 2px solid rgba(255, 255, 255, 0.3);
-    color: var(--accent-slate);
+    color: var(--brand-teal);
 }
 
-.logout-btn-custom {
-    color: rgba(252, 238, 215, 0.6) !important;
+.jp-dropdown-user-info {
+    flex: 1;
+    overflow: hidden;
+}
+.jp-dropdown-user-name {
+    font-weight: 600;
+    font-size: 0.88rem;
+    color: #ffffff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.jp-dropdown-user-role {
+    font-size: 0.7rem;
+    color: rgba(253, 191, 90, 0.7);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.jp-dropdown-logout {
+    color: rgba(252, 238, 215, 0.5) !important;
     transition: var(--transition);
     border-radius: var(--radius-xs);
-    padding: 4px;
+    padding: 4px 6px;
+    flex-shrink: 0;
+    font-size: 1.1rem;
 }
-.logout-btn-custom:hover {
+.jp-dropdown-logout:hover {
     color: #ff7675 !important;
-    background: rgba(255, 118, 117, 0.1);
-    transform: scale(1.1);
+    background: rgba(255, 118, 117, 0.12);
+    transform: scale(1.15);
 }
 
-/* ── Sidebar Footer Auth Buttons ── */
-.sidebar-footer {
-    position: relative;
-    z-index: 1;
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
-}
+/* (Legacy sidebar nav classes removed — replaced by jp-topbar & jp-dropdown-nav above) */
 
 /* ══════════════════════════════════════════════════════════
    BUTTONS  —  Warm Gradient CTAs
@@ -1105,3 +1252,34 @@ h1, h2, h3, h4, h5, h6,
 #loadingSpinner .spinner-border {
     color: var(--accent-teal) !important;
 }
+
+/* ══════════════════════════════════════════════════════════
+   DROPDOWN ACTIVE-LINK HIGHLIGHT UTILITY
+   ══════════════════════════════════════════════════════════ */
+
+/* Applied via JS on page load to the matching nav link */
+.jp-dropdown-link.jp-active {
+    background: rgba(253, 191, 90, 0.14);
+    color: var(--brand-gold) !important;
+    font-weight: 600;
+    border-left: 3px solid var(--brand-gold);
+    padding-left: calc(0.75rem - 3px);
+}
+.jp-dropdown-link.jp-active i {
+    color: var(--brand-gold) !important;
+}
+
+/* Smooth dropdown scrollbar tint */
+.jp-dropdown-nav::-webkit-scrollbar {
+    width: 4px;
+}
+.jp-dropdown-nav::-webkit-scrollbar-thumb {
+    background: rgba(253, 191, 90, 0.25);
+    border-radius: 4px;
+}
+
+/* ── Helper classes retained for compatibility ── */
+.text-accent-cerulean { color: var(--text-on-dark) !important; }
+.text-teal            { color: var(--accent-teal) !important; }
+.text-slate           { color: var(--accent-slate) !important; }
+.text-accent-gold     { color: var(--brand-gold) !important; }

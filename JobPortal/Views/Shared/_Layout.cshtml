@@ -17,6 +17,9 @@
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
 
+    <!-- ─── Custom Favicon (JobPortal Logo PNG) ─── -->
+    <link rel="icon" type="image/png" sizes="32x32" href="~/images/favicon.png" />
+    <link rel="shortcut icon" type="image/png" href="~/images/favicon.png" />
     <!-- Custom Site CSS -->
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 
@@ -24,46 +27,47 @@
 </head>
 <body>
 
-    <div class="dashboard-wrapper">
-        <!-- ─── Side Navigation Panel ─── -->
-        @await Html.PartialAsync("_Navbar")
+    <!-- ─── Fixed Top Navigation Bar ─── -->
+    @await Html.PartialAsync("_Navbar")
 
-        <div class="dashboard-main">
-            <!-- ─── Global Alerts ─── -->
-            @if (TempData["Success"] != null)
-            {
-                <div class="alert alert-success alert-dismissible fade show mx-4 mt-3 mb-0 rounded border-0 text-center fw-semibold shadow-sm" role="alert">
-                    <i class="bi bi-check-circle-fill me-2"></i>@TempData["Success"]
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    <!-- ─── Main Page Wrapper (below fixed header) ─── -->
+    <div class="dashboard-main">
+
+        <!-- ─── Global Alerts ─── -->
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success alert-dismissible fade show mx-4 mt-3 mb-0 rounded border-0 text-center fw-semibold shadow-sm" role="alert">
+                <i class="bi bi-check-circle-fill me-2"></i>@TempData["Success"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade show mx-4 mt-3 mb-0 rounded border-0 text-center fw-semibold shadow-sm" role="alert">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>@TempData["Error"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+
+        <!-- ─── Main Content ─── -->
+        <main class="dashboard-content px-4 py-4">
+            @RenderBody()
+        </main>
+
+        <!-- ─── Clean Dashboard Footer ─── -->
+        <footer class="dashboard-footer py-3 px-4 mt-auto">
+            <div class="d-flex flex-column flex-md-row align-items-center justify-content-between gap-2 text-muted small border-top pt-3">
+                <div>
+                    &copy; @DateTime.Now.Year JobPortal &mdash; School Project
                 </div>
-            }
-
-            @if (TempData["Error"] != null)
-            {
-                <div class="alert alert-danger alert-dismissible fade show mx-4 mt-3 mb-0 rounded border-0 text-center fw-semibold shadow-sm" role="alert">
-                    <i class="bi bi-exclamation-triangle-fill me-2"></i>@TempData["Error"]
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                <div>
+                    Built with ASP.NET Core MVC, Dapper &amp; MySQL
                 </div>
-            }
+            </div>
+        </footer>
 
-            <!-- ─── Main Content ─── -->
-            <main class="dashboard-content px-4 py-4">
-                @RenderBody()
-            </main>
-
-            <!-- ─── Clean Dashboard Footer ─── -->
-            <footer class="dashboard-footer py-3 px-4 mt-auto">
-                <div class="d-flex flex-column flex-md-row align-items-center justify-content-between gap-2 text-muted small border-top pt-3">
-                    <div>
-                        &copy; @DateTime.Now.Year JobPortal &mdash; School Project
-                    </div>
-                    <div>
-                        Built with ASP.NET Core MVC, Dapper &amp; MySQL
-                    </div>
-                </div>
-            </footer>
-        </div>
-    </div>
+    </div><!-- /.dashboard-main -->
 
     <!-- Bootstrap 5 JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
