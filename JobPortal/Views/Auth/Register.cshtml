@@ -135,31 +135,29 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script>
-        // Toggle company fields when role radio changes
-        document.querySelectorAll('.role-radio').forEach(radio => {
-            radio.addEventListener('change', toggleCompanyFields);
-        });
 
-        function toggleCompanyFields() {
+    <script>
+        function updateRoleUI() {
             const isCompany = document.getElementById('roleCompany').checked;
-            const companyFields = document.getElementById('companyFields');
-            const companyNameInput = document.getElementById('companyNameInput');
+
+            const applicantCard = document.getElementById('roleApplicantCard');
+            const companyCard = document.getElementById('roleCompanyCard');
+
+            applicantCard.classList.remove('selected');
+            companyCard.classList.remove('selected');
 
             if (isCompany) {
-                companyFields.classList.remove('d-none');
-                companyNameInput.setAttribute('required', 'required');
+                companyCard.classList.add('selected');
             } else {
-                companyFields.classList.add('d-none');
-                companyNameInput.removeAttribute('required');
+                applicantCard.classList.add('selected');
             }
-
-            // Highlight selected role card
-            document.getElementById('roleApplicantCard').classList.toggle('selected', !isCompany);
-            document.getElementById('roleCompanyCard').classList.toggle('selected', isCompany);
         }
 
-        // Highlight the applicant card on load
-        document.getElementById('roleApplicantCard').classList.add('selected');
+        document.querySelectorAll('.role-radio').forEach(radio => {
+            radio.addEventListener('change', updateRoleUI);
+        });
+
+        // run on page load
+        document.addEventListener('DOMContentLoaded', updateRoleUI);
     </script>
 }

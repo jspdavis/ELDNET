@@ -22,7 +22,7 @@
 
                         <!-- Job Title -->
                         <div class="mb-4">
-                            <label asp-for="Title" class="form-label fw-semibold text-light"></label>
+                            <label asp-for="Title" class="form-label fw-semibold text-dark"></label>
                             <input asp-for="Title" class="form-control form-control-lg dark-input"
                                    placeholder="e.g. Senior Backend Developer" />
                             <span asp-validation-for="Title" class="text-danger small"></span>
@@ -30,7 +30,7 @@
 
                         <!-- Category -->
                         <div class="mb-4">
-                            <label asp-for="CategoryId" class="form-label fw-semibold text-light"></label>
+                            <label asp-for="CategoryId" class="form-label fw-semibold text-dark"></label>
                             <select asp-for="CategoryId" class="form-select dark-input form-select-lg">
                                 <option value="">— Select a category —</option>
                                 @foreach (var cat in Model.Categories)
@@ -44,13 +44,13 @@
                         <!-- Location + Salary (side by side) -->
                         <div class="row g-3 mb-4">
                             <div class="col-md-6">
-                                <label asp-for="Location" class="form-label fw-semibold text-light"></label>
+                                <label asp-for="Location" class="form-label fw-semibold text-dark"></label>
                                 <input asp-for="Location" class="form-control dark-input"
                                        placeholder="e.g. Makati, Metro Manila" />
                                 <span asp-validation-for="Location" class="text-danger small"></span>
                             </div>
                             <div class="col-md-6">
-                                <label asp-for="SalaryRange" class="form-label fw-semibold text-light"></label>
+                                <label asp-for="SalaryRange" class="form-label fw-semibold text-dark"></label>
                                 <input asp-for="SalaryRange" class="form-control dark-input"
                                        placeholder="e.g. ₱50,000 – ₱80,000/month" />
                                 <span asp-validation-for="SalaryRange" class="text-danger small"></span>
@@ -59,7 +59,7 @@
 
                         <!-- Description -->
                         <div class="mb-4">
-                            <label asp-for="Description" class="form-label fw-semibold text-light"></label>
+                            <label asp-for="Description" class="form-label fw-semibold text-dark"></label>
                             <textarea asp-for="Description" class="form-control dark-input" rows="6"
                                       placeholder="Describe the role, responsibilities, and what makes it exciting…"></textarea>
                             <span asp-validation-for="Description" class="text-danger small"></span>
@@ -67,7 +67,7 @@
 
                         <!-- Requirements -->
                         <div class="mb-5">
-                            <label asp-for="Requirements" class="form-label fw-semibold text-light"></label>
+                            <label asp-for="Requirements" class="form-label fw-semibold text-dark"></label>
                             <textarea asp-for="Requirements" class="form-control dark-input" rows="4"
                                       placeholder="List qualifications, experience, and skills required…"></textarea>
                             <span asp-validation-for="Requirements" class="text-danger small"></span>
