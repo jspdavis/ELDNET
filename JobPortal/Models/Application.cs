@@ -13,8 +13,12 @@ namespace JobPortal.Models
         public int JobId { get; set; }
         public int UserId { get; set; }
 
-        [MinLength(50, ErrorMessage = "Cover letter must be at least 50 characters.")]
+        // Typed cover letter (optional — user may upload a PDF instead)
         public string CoverLetter { get; set; } = string.Empty;
+
+        // Cover letter file upload fields — mapped from applications columns
+        public string CoverLetterFilename { get; set; }      // server-side stored UUID filename
+        public string CoverLetterOriginalName { get; set; }  // original PDF filename the applicant uploaded
 
         [Required]
         [RegularExpression("^(pending|reviewed|accepted|rejected)$", ErrorMessage = "Invalid application status.")]

@@ -38,6 +38,33 @@ namespace JobPortal.Services
         }
 
         /// <summary>
+        /// Submits a new application with an optional uploaded cover-letter file.
+        /// Either coverLetter text, a file, or neither may be provided.
+        /// </summary>
+        public async Task ApplyWithFileAsync(int jobId, int userId, string coverLetter,
+            string? coverLetterFilename, string? coverLetterOriginalName)
+        {
+            using var db = _context.CreateConnection();
+
+            // Insert application including optional file columns
+            const string sql = @"
+                INSERT INTO applications
+                    (job_id, user_id, cover_letter, cover_letter_filename,
+                     cover_letter_original_name, status, applied_at)
+                VALUES (@JobId, @UserId, @CoverLetter, @CoverLetterFilename,
+                        @CoverLetterOriginalName, 'pending', NOW())";
+
+            await db.ExecuteAsync(sql, new
+            {
+                JobId                    = jobId,
+                UserId                   = userId,
+                CoverLetter              = coverLetter,
+                CoverLetterFilename      = coverLetterFilename,
+                CoverLetterOriginalName  = coverLetterOriginalName
+            });
+        }
+
+        /// <summary>
         /// Returns all applications submitted by a specific applicant.
         /// Joins job and company data for display.
         /// </summary>
@@ -72,16 +99,18 @@ namespace JobPortal.Services
         {
             using var db = _context.CreateConnection();
 
-            // Fetch all applicants for this job with applicant name and email
+            // Fetch all applicants for this job with applicant name, email, and cover letter file info
             const string sql = @"
-                SELECT a.application_id AS ApplicationId,
-                       a.job_id         AS JobId,
-                       a.user_id        AS UserId,
-                       a.cover_letter   AS CoverLetter,
-                       a.status         AS Status,
-                       a.applied_at     AS AppliedAt,
-                       u.full_name      AS ApplicantName,
-                       u.email          AS ApplicantEmail
+                SELECT a.application_id              AS ApplicationId,
+                       a.job_id                      AS JobId,
+                       a.user_id                     AS UserId,
+                       a.cover_letter                AS CoverLetter,
+                       a.cover_letter_filename       AS CoverLetterFilename,
+                       a.cover_letter_original_name  AS CoverLetterOriginalName,
+                       a.status                      AS Status,
+                       a.applied_at                  AS AppliedAt,
+                       u.full_name                   AS ApplicantName,
+                       u.email                       AS ApplicantEmail
                 FROM applications a
                 INNER JOIN users u ON u.user_id = a.user_id
                 WHERE a.job_id = @JobId
@@ -126,6 +155,30 @@ namespace JobPortal.Services
 
             int count = await db.ExecuteScalarAsync<int>(sql, new { JobId = jobId, UserId = userId });
             return count > 0;
+        }
+
+        /// <summary>
+        /// Returns a single application after verifying the job belongs to the requesting company user.
+        /// Used by the company to securely serve an uploaded cover letter file.
+        /// </summary>
+        public async Task<Application?> GetApplicationForCompanyAsync(int applicationId, int companyUserId)
+        {
+            using var db = _context.CreateConnection();
+
+            // Join through job_postings and companies to confirm ownership before returning file info
+            const string sql = @"
+                SELECT a.application_id             AS ApplicationId,
+                       a.cover_letter_filename      AS CoverLetterFilename,
+                       a.cover_letter_original_name AS CoverLetterOriginalName
+                FROM applications a
+                INNER JOIN job_postings jp ON jp.job_id    = a.job_id
+                INNER JOIN companies    c  ON c.company_id = jp.company_id
+                WHERE a.application_id = @ApplicationId
+                  AND c.user_id        = @CompanyUserId
+                LIMIT 1";
+
+            return await db.QueryFirstOrDefaultAsync<Application?>(sql,
+                new { ApplicationId = applicationId, CompanyUserId = companyUserId });
         }
     }
 }

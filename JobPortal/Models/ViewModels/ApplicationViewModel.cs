@@ -11,8 +11,8 @@ namespace JobPortal.Models.ViewModels
         public string JobTitle { get; set; } = string.Empty;
         public string CompanyName { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "A cover letter is required.")]
-        [MinLength(50, ErrorMessage = "Cover letter must be at least 50 characters.")]
+        // Cover letter text is optional — user may upload a PDF instead.
+        // If both are empty the submission is still valid (FR-20).
         [Display(Name = "Cover Letter")]
         public string CoverLetter { get; set; } = string.Empty;
     }

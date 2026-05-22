@@ -3,3 +3,7 @@ bin/
 obj/
 *.user
 *.suo
+
+# Uploaded files
+App_Data/
+wwwroot/uploads/

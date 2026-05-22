@@ -7,13 +7,14 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-8">
-                
+
                 <!-- Back Link -->
                 <a asp-controller="Jobs" asp-action="Index" class="btn-back mb-4 d-inline-flex align-items-center gap-2">
                     <i class="bi bi-arrow-left"></i> Back to Listings
                 </a>
 
-                <div class="detail-card p-4 p-md-5">
+                <!-- Profile Info Card -->
+                <div class="detail-card p-4 p-md-5 mb-4">
                     <div class="d-flex justify-content-between align-items-start flex-wrap gap-3 mb-4">
                         <div>
                             <h1 class="detail-title mb-1">@Model.FullName</h1>
@@ -49,8 +50,76 @@
                             @(string.IsNullOrWhiteSpace(Model.Bio) ? "Not provided" : Model.Bio)
                         </p>
                     </div>
-
                 </div>
+
+                <!-- Resume Card -->
+                <div class="detail-card p-4 p-md-5">
+                    <h4 class="section-heading mb-3">
+                        <i class="bi bi-file-earmark-text me-2 text-primary"></i>Resume
+                    </h4>
+
+                    @if (!string.IsNullOrEmpty(Model.ResumeFilename))
+                    {
+                        <!-- Resume exists: show info, download button, and collapsible replace form -->
+                        <div class="d-flex align-items-center gap-3 mb-3 flex-wrap">
+                            <div>
+                                <p class="fw-semibold text-light mb-0">
+                                    <i class="bi bi-paperclip me-1"></i>@Model.ResumeOriginalName
+                                </p>
+                                <p class="text-muted small mb-0">
+                                    Uploaded on @Model.ResumeUploadedAt?.ToString("MMMM dd, yyyy 'at' h:mm tt")
+                                </p>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center gap-2 mb-3">
+                            <a asp-controller="Profile" asp-action="DownloadResume"
+                               class="btn btn-outline-primary btn-sm">
+                                <i class="bi bi-download me-1"></i>Download Resume
+                            </a>
+                            <button type="button" class="btn btn-link btn-sm text-muted p-0"
+                                    data-bs-toggle="collapse" data-bs-target="#replaceResumePanel"
+                                    aria-expanded="false">
+                                Replace
+                            </button>
+                        </div>
+                        <div class="collapse" id="replaceResumePanel">
+                            <form asp-action="UploadResume" asp-controller="Profile"
+                                  method="post" enctype="multipart/form-data" class="mt-2">
+                                @Html.AntiForgeryToken()
+                                <div class="mb-2">
+                                    <input type="file" name="resumeFile" id="resumeFile"
+                                           class="form-control dark-input" accept=".pdf,.docx">
+                                    <div class="form-text text-muted">
+                                        PDF or DOCX only. Maximum 5 MB. This will replace your current resume.
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-sm mt-1">
+                                    <i class="bi bi-upload me-1"></i>Upload Resume
+                                </button>
+                            </form>
+                        </div>
+                    }
+                    else
+                    {
+                        <!-- No resume yet: show upload form directly -->
+                        <p class="text-muted mb-3">No resume uploaded yet.</p>
+                        <form asp-action="UploadResume" asp-controller="Profile"
+                              method="post" enctype="multipart/form-data">
+                            @Html.AntiForgeryToken()
+                            <div class="mb-2">
+                                <input type="file" name="resumeFile" id="resumeFile"
+                                       class="form-control dark-input" accept=".pdf,.docx">
+                                <div class="form-text text-muted">
+                                    PDF or DOCX only. Maximum 5 MB.
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary mt-2">
+                                <i class="bi bi-upload me-1"></i>Upload Resume
+                            </button>
+                        </form>
+                    }
+                </div>
+
             </div>
         </div>
     </div>

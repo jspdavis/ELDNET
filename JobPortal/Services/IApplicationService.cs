@@ -11,6 +11,10 @@ namespace JobPortal.Services
         /// <summary>Submits a new application for a job.</summary>
         Task ApplyAsync(int jobId, int userId, string coverLetter);
 
+        /// <summary>Submits a new application with an optional uploaded cover-letter file.</summary>
+        Task ApplyWithFileAsync(int jobId, int userId, string coverLetter,
+            string? coverLetterFilename, string? coverLetterOriginalName);
+
         /// <summary>Returns all applications submitted by a specific applicant.</summary>
         Task<IEnumerable<Application>> GetByApplicantAsync(int userId);
 
@@ -25,5 +29,11 @@ namespace JobPortal.Services
         /// Used to prevent duplicate applications.
         /// </summary>
         Task<bool> HasAppliedAsync(int jobId, int userId);
+
+        /// <summary>
+        /// Returns a single application record after verifying the job belongs to the given company.
+        /// Used by the company to securely download a cover letter file.
+        /// </summary>
+        Task<Application?> GetApplicationForCompanyAsync(int applicationId, int companyUserId);
     }
 }

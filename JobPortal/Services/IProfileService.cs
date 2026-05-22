@@ -16,5 +16,14 @@ namespace JobPortal.Services
 
         // Updates full_name in users table AND company_name, description, location, website in companies table. Wrap in a transaction.
         Task UpdateCompanyProfileAsync(int userId, EditCompanyProfileViewModel model);
+
+        // Saves resume filename and metadata to applicant_profiles
+        Task SaveResumeAsync(int userId, string filename, string originalName);
+
+        // Returns the stored resume filename for a user (or null if none uploaded)
+        Task<string?> GetResumeFilenameAsync(int userId);
+
+        // Clears resume data when a user replaces their resume
+        Task ClearResumeAsync(int userId);
     }
 }

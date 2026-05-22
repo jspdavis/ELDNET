@@ -1,5 +1,6 @@
 using JobPortal.Data;
 using JobPortal.Services;
+using JobPortal.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +28,14 @@ builder.Services.AddScoped<IJobService,         JobService>();
 builder.Services.AddScoped<IApplicationService, ApplicationService>();
 builder.Services.AddScoped<IAdminService,       AdminService>();
 builder.Services.AddScoped<IProfileService,     ProfileService>();
+
+// ── File Storage ──────────────────────────────────────────────────────────────
+// Resolve the App_Data path relative to the content root and ensure both
+// upload subdirectories exist before the app starts accepting requests.
+var appDataPath = Path.Combine(builder.Environment.ContentRootPath, "App_Data");
+Directory.CreateDirectory(Path.Combine(appDataPath, "resumes"));
+Directory.CreateDirectory(Path.Combine(appDataPath, "cover_letters"));
+builder.Services.AddSingleton(new FileStorageSettings { AppDataPath = appDataPath });
 
 // ── HttpContextAccessor ───────────────────────────────────────────────────────
 // Needed so Razor views can access HttpContext.Session

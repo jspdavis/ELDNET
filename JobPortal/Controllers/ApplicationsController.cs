@@ -1,22 +1,30 @@
 using Microsoft.AspNetCore.Mvc;
 using JobPortal.Models.ViewModels;
 using JobPortal.Services;
+using JobPortal.Helpers;
+using JobPortal.Settings;
 
 namespace JobPortal.Controllers
 {
     /// <summary>
-    /// Handles application submission and tracking for applicants.
-    /// All actions require the user to be logged in as an applicant.
+    /// Handles application submission and tracking for applicants,
+    /// and cover letter file downloads for companies.
+    /// All actions require the user to be logged in.
     /// </summary>
     public class ApplicationsController : Controller
     {
         private readonly IApplicationService _appService;
         private readonly IJobService         _jobService;
+        private readonly FileStorageSettings _storage;
 
-        public ApplicationsController(IApplicationService appService, IJobService jobService)
+        public ApplicationsController(
+            IApplicationService appService,
+            IJobService         jobService,
+            FileStorageSettings storage)
         {
             _appService = appService;
             _jobService = jobService;
+            _storage    = storage;
         }
 
         // ── GET /Applications ────────────────────────────────────────────────
@@ -71,17 +79,19 @@ namespace JobPortal.Controllers
 
         // ── POST /Applications/Apply/{jobId} ─────────────────────────────────
         /// <summary>
-        /// Submits the application (cover letter) to the database.
-        /// Redirects to the applicant's applications list on success.
+        /// Submits the application. Accepts either a typed cover letter OR an uploaded
+        /// cover letter PDF — not both required. Both empty is also valid (FR-20).
         /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("Applications/Apply/{jobId}")]
-        public async Task<IActionResult> Apply(int jobId, ApplicationViewModel model)
+        public async Task<IActionResult> Apply(int jobId, ApplicationViewModel model,
+            IFormFile? coverLetterFile)
         {
             if (!IsApplicant()) return RedirectToAction("Login", "Auth");
 
-            // Validate all model annotations before proceeding
+            // Validate only non-file model fields (CoverLetter is optional)
+            ModelState.Remove("CoverLetter");
             if (!ModelState.IsValid)
                 return View(model);
 
@@ -94,7 +104,34 @@ namespace JobPortal.Controllers
                 return RedirectToAction("Index");
             }
 
-            await _appService.ApplyAsync(jobId, userId, model.CoverLetter);
+            string? coverLetterFilename     = null;
+            string? coverLetterOriginalName = null;
+
+            // If a file was provided and passes validation, save it and use it as the cover letter
+            if (coverLetterFile != null && coverLetterFile.Length > 0)
+            {
+                if (FileUploadHelper.IsValidDocument(coverLetterFile, out var fileError))
+                {
+                    coverLetterFilename     = FileUploadHelper.GenerateUniqueFilename(coverLetterFile.FileName);
+                    coverLetterOriginalName = coverLetterFile.FileName;
+
+                    var savePath = Path.Combine(_storage.AppDataPath, "cover_letters", coverLetterFilename);
+                    using var stream = new FileStream(savePath, FileMode.Create);
+                    await coverLetterFile.CopyToAsync(stream);
+                }
+                else
+                {
+                    // File failed validation — fall back to typed text (no hard error)
+                    TempData["Warning"] = $"Cover letter file rejected: {fileError} Your typed cover letter was used instead.";
+                }
+            }
+
+            // Submit application with whichever cover letter option was provided
+            await _appService.ApplyWithFileAsync(
+                jobId, userId,
+                model.CoverLetter,
+                coverLetterFilename,
+                coverLetterOriginalName);
 
             TempData["Success"] = "Your application has been submitted!";
             return RedirectToAction("Index");
@@ -113,6 +150,37 @@ namespace JobPortal.Controllers
             var applications = await _appService.GetByApplicantAsync(userId);
 
             return View(applications);
+        }
+
+        // ── GET /Applications/DownloadCoverLetter/{applicationId} ────────────
+        /// <summary>
+        /// Company-side: serves the uploaded PDF cover letter for a specific application.
+        /// Verifies the job belongs to this company before serving the file.
+        /// </summary>
+        [HttpGet]
+        public async Task<IActionResult> DownloadCoverLetter(int applicationId)
+        {
+            // Only company users may download cover letters
+            var userIdStr = HttpContext.Session.GetString("userId");
+            if (userIdStr == null || HttpContext.Session.GetString("userRole") != "company")
+                return RedirectToAction("Login", "Auth");
+
+            int companyUserId = int.Parse(userIdStr);
+
+            // Retrieve application and verify it belongs to this company (security check)
+            var application = await _appService.GetApplicationForCompanyAsync(applicationId, companyUserId);
+            if (application == null || string.IsNullOrEmpty(application.CoverLetterFilename))
+                return NotFound();
+
+            var fullPath = Path.Combine(_storage.AppDataPath, "cover_letters", application.CoverLetterFilename);
+            if (!System.IO.File.Exists(fullPath))
+                return NotFound();
+
+            // Cover letters are always PDF (only PDF accepted on the upload form)
+            const string contentType = "application/pdf";
+            var downloadName = application.CoverLetterOriginalName ?? application.CoverLetterFilename;
+
+            return File(System.IO.File.ReadAllBytes(fullPath), contentType, downloadName);
         }
 
         // ── Helper: Check if current session user is an applicant ─────────────

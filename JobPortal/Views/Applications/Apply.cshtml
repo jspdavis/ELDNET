@@ -18,14 +18,13 @@
                 </div>
 
                 <div class="form-card p-4 p-md-5">
-                    <h2 class="form-card-title mb-1">Write Your Cover Letter</h2>
+                    <h2 class="form-card-title mb-1">Submit Your Application</h2>
                     <p class="text-muted small mb-4">
-                        Tell the employer why you are the best candidate for this role.
-                        Minimum 50 characters.
+                        You may type a cover letter, upload one, or skip.
                     </p>
 
                     <form asp-controller="Applications" asp-action="Apply" asp-route-jobId="@Model.JobId"
-                          method="post" class="needs-validation" novalidate>
+                          method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
                         @Html.AntiForgeryToken()
 
                         <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2 small"></div>
@@ -34,17 +33,46 @@
                         <input type="hidden" asp-for="JobTitle" />
                         <input type="hidden" asp-for="CompanyName" />
 
-                        <div class="mb-4">
-                            <label asp-for="CoverLetter" class="form-label fw-semibold text-light"></label>
-                            <textarea asp-for="CoverLetter" class="form-control dark-input" rows="10"
-                                      placeholder="Dear Hiring Manager,&#10;&#10;I am excited to apply for the @Model.JobTitle position at @Model.CompanyName..."></textarea>
-                            <div class="d-flex justify-content-between mt-1">
-                                <span asp-validation-for="CoverLetter" class="text-danger small"></span>
-                                <span class="text-muted small" id="charCount">0 characters</span>
+                        <!-- Cover Letter Tabs Toggle -->
+                        <div class="mb-3">
+                            <ul class="nav nav-tabs border-bottom-0" id="coverLetterTabs" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active bg-transparent text-primary fw-semibold border-0 border-bottom border-primary border-2" 
+                                            id="type-tab" type="button" role="tab">Type Cover Letter</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link bg-transparent text-muted border-0" 
+                                            id="upload-tab" type="button" role="tab">Upload PDF</button>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Tab Content Panels -->
+                        <div class="mb-4 position-relative">
+                            
+                            <!-- Type Text Panel -->
+                            <div id="typePanel" class="d-block">
+                                <label asp-for="CoverLetter" class="form-label fw-semibold text-light"></label>
+                                <textarea asp-for="CoverLetter" class="form-control dark-input" rows="8"
+                                          placeholder="Dear Hiring Manager,&#10;&#10;I am excited to apply for the @Model.JobTitle position at @Model.CompanyName..."></textarea>
+                                <div class="d-flex justify-content-between mt-1">
+                                    <span asp-validation-for="CoverLetter" class="text-danger small"></span>
+                                    <span class="text-muted small" id="charCount">0 characters</span>
+                                </div>
+                            </div>
+
+                            <!-- Upload PDF Panel -->
+                            <div id="uploadPanel" class="d-none">
+                                <label class="form-label fw-semibold text-light">Cover Letter Document</label>
+                                <input type="file" name="coverLetterFile" id="coverLetterFile"
+                                       class="form-control dark-input" accept=".pdf">
+                                <div class="form-text text-muted">
+                                    PDF only. Maximum 5 MB.
+                                </div>
                             </div>
                         </div>
 
-                        <div class="d-flex gap-3">
+                        <div class="d-flex gap-3 mt-4">
                             <button type="submit" class="btn btn-primary btn-lg px-5">
                                 <i class="bi bi-send-fill me-2"></i>Submit Application
                             </button>
@@ -63,8 +91,51 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script>
-        // Live character counter for cover letter textarea
+        // Tab switching logic (vanilla JS)
+        const typeTab     = document.getElementById('type-tab');
+        const uploadTab   = document.getElementById('upload-tab');
+        const typePanel   = document.getElementById('typePanel');
+        const uploadPanel = document.getElementById('uploadPanel');
+        
+        // Reset file input/textarea if user switches tabs to avoid dual submission confusion
         const textarea  = document.querySelector('textarea[name="CoverLetter"]');
+        const fileInput = document.getElementById('coverLetterFile');
+
+        typeTab.addEventListener('click', () => {
+            // Activate tab styling
+            typeTab.classList.replace('text-muted', 'text-primary');
+            typeTab.classList.add('border-bottom', 'border-primary', 'border-2', 'fw-semibold');
+            uploadTab.classList.replace('text-primary', 'text-muted');
+            uploadTab.classList.remove('border-bottom', 'border-primary', 'border-2', 'fw-semibold');
+
+            // Show text panel, hide upload
+            typePanel.classList.replace('d-none', 'd-block');
+            uploadPanel.classList.replace('d-block', 'd-none');
+            
+            // Clear file input so it isn't submitted
+            if(fileInput) fileInput.value = '';
+        });
+
+        uploadTab.addEventListener('click', () => {
+            // Activate tab styling
+            uploadTab.classList.replace('text-muted', 'text-primary');
+            uploadTab.classList.add('border-bottom', 'border-primary', 'border-2', 'fw-semibold');
+            typeTab.classList.replace('text-primary', 'text-muted');
+            typeTab.classList.remove('border-bottom', 'border-primary', 'border-2', 'fw-semibold');
+
+            // Show upload panel, hide text
+            uploadPanel.classList.replace('d-none', 'd-block');
+            typePanel.classList.replace('d-block', 'd-none');
+            
+            // Clear textarea so text isn't submitted if they switch to upload
+            if(textarea) {
+                textarea.value = '';
+                document.getElementById('charCount').textContent = '0 characters';
+                document.getElementById('charCount').className = 'text-warning small';
+            }
+        });
+
+        // Live character counter for cover letter textarea
         const charCount = document.getElementById('charCount');
         if (textarea && charCount) {
             textarea.addEventListener('input', () => {
@@ -72,6 +143,10 @@
                 charCount.textContent = `${len} character${len !== 1 ? 's' : ''}`;
                 charCount.className   = len >= 50 ? 'text-success small' : 'text-warning small';
             });
+            // Initial trigger if prepopulated
+            if(textarea.value.length > 0) {
+                textarea.dispatchEvent(new Event('input'));
+            }
         }
     </script>
 }

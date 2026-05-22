@@ -12,5 +12,10 @@ namespace JobPortal.Models
         public string Location { get; set; }
         public string Bio { get; set; }
         public string ProfilePictureUrl { get; set; }
+
+        // Resume file fields — mapped from applicant_profiles columns
+        public string ResumeFilename { get; set; }      // server-side stored UUID filename
+        public string ResumeOriginalName { get; set; }  // original filename the user uploaded
+        public DateTime? ResumeUploadedAt { get; set; } // when the resume was uploaded
     }
 }

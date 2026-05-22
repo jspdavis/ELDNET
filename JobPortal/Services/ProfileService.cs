@@ -20,14 +20,17 @@ namespace JobPortal.Services
         {
             using var db = _context.CreateConnection();
             const string sql = @"
-                SELECT p.profile_id AS ProfileId,
-                       p.user_id AS UserId,
-                       p.phone AS Phone,
-                       p.location AS Location,
-                       p.bio AS Bio,
+                SELECT p.profile_id          AS ProfileId,
+                       p.user_id             AS UserId,
+                       p.phone               AS Phone,
+                       p.location            AS Location,
+                       p.bio                 AS Bio,
                        p.profile_picture_url AS ProfilePictureUrl,
-                       u.full_name AS FullName,
-                       u.email AS Email
+                       p.resume_filename      AS ResumeFilename,
+                       p.resume_original_name AS ResumeOriginalName,
+                       p.resume_uploaded_at   AS ResumeUploadedAt,
+                       u.full_name           AS FullName,
+                       u.email               AS Email
                 FROM applicant_profiles p
                 INNER JOIN users u ON u.user_id = p.user_id
                 WHERE p.user_id = @UserId
@@ -124,6 +127,44 @@ namespace JobPortal.Services
                 transaction.Rollback();
                 throw;
             }
+        }
+
+        // Saves resume filename and metadata to applicant_profiles
+        public async Task SaveResumeAsync(int userId, string filename, string originalName)
+        {
+            using var db = _context.CreateConnection();
+            const string sql = @"
+                UPDATE applicant_profiles
+                SET resume_filename      = @Filename,
+                    resume_original_name = @OriginalName,
+                    resume_uploaded_at   = NOW()
+                WHERE user_id = @UserId";
+            await db.ExecuteAsync(sql, new { Filename = filename, OriginalName = originalName, UserId = userId });
+        }
+
+        // Returns the stored resume filename for a user (or null if none uploaded)
+        public async Task<string?> GetResumeFilenameAsync(int userId)
+        {
+            using var db = _context.CreateConnection();
+            const string sql = @"
+                SELECT resume_filename
+                FROM applicant_profiles
+                WHERE user_id = @UserId
+                LIMIT 1";
+            return await db.QueryFirstOrDefaultAsync<string?>(sql, new { UserId = userId });
+        }
+
+        // Clears resume data when a user replaces their resume
+        public async Task ClearResumeAsync(int userId)
+        {
+            using var db = _context.CreateConnection();
+            const string sql = @"
+                UPDATE applicant_profiles
+                SET resume_filename      = NULL,
+                    resume_original_name = NULL,
+                    resume_uploaded_at   = NULL
+                WHERE user_id = @UserId";
+            await db.ExecuteAsync(sql, new { UserId = userId });
         }
     }
 }

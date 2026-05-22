@@ -191,3 +191,24 @@ VALUES (
     'System Administrator',
     NOW()
 );
+
+-- ============================================================
+-- FILE UPLOAD COLUMNS
+-- resume_filename: server-side UUID-based stored filename
+-- resume_original_name: original filename the user uploaded
+-- resume_uploaded_at: timestamp of the upload
+-- ============================================================
+
+ALTER TABLE applicant_profiles
+    ADD COLUMN IF NOT EXISTS resume_filename      VARCHAR(500),
+    ADD COLUMN IF NOT EXISTS resume_original_name VARCHAR(500),
+    ADD COLUMN IF NOT EXISTS resume_uploaded_at   DATETIME;
+
+-- cover_letter_filename: server-side stored filename for uploaded PDF
+-- cover_letter_original_name: original PDF filename the applicant uploaded
+-- NOTE: the existing cover_letter TEXT column remains for typed cover letters.
+-- Both typed and uploaded options are valid; neither is required.
+
+ALTER TABLE applications
+    ADD COLUMN IF NOT EXISTS cover_letter_filename      VARCHAR(500),
+    ADD COLUMN IF NOT EXISTS cover_letter_original_name VARCHAR(500);
